@@ -1,11 +1,8 @@
-using System;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Warehouse.Models;
-using System;
-using System.IO;
-using System.Security.Cryptography;
-using System.Text;
+using Avalonia.Interactivity;
+using Warehouse.ViewModels;
+
 namespace Warehouse.Views;
 
 public partial class MainWindow : Window
@@ -13,7 +10,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-       }
+    }
 
     private void InputElement_OnPointerPressed(object? sender, PointerEventArgs e)
     {
@@ -25,6 +22,9 @@ public partial class MainWindow : Window
     {
         PasswordTextBox.PasswordChar = '*'; // Восстанавливаем маскировку пароля
     }
-    
-    
+
+    private void Button_OnClick(object? sender, RoutedEventArgs e)
+    {
+        (DataContext as MainWindowViewModel).ButtonClickCommand.Execute();
+    }
 }

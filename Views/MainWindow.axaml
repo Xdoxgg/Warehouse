@@ -15,31 +15,36 @@
         <vm:MainWindowViewModel />
     </Design.DataContext>
     <Window.Styles>
-        <Style Selector="TextBox">
-            <Setter Property="Background" Value="#e0e0e0" />
-            <Setter Property="Margin" Value="10"></Setter>
-            <Setter Property="Width" Value="250"></Setter>
-            <Setter Property="Height" Value="20"></Setter>
-        </Style>
+
 
     </Window.Styles>
-    <!-- Text="{Binding Greeting}" -->
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <StackPanel>
-            <TextBox Name="NameTextBox" />
-            <TextBox PasswordChar="*" Name="PasswordTextBox" />
-            <Button Width="250" Height="30" Margin="10 15" Content="Войти в систему"
-                    
-                    
-                    />
+
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+        <Label Content="{Binding ErrorText, Mode=TwoWay}" Background="Red" Foreground="White"
+               Opacity="{Binding ErrorOpacity}">
+
+            <Label.Transitions>
+                <Transitions>
+                    <DoubleTransition Duration="0:0:0.3" Easing="SineEaseIn" Property="Opacity"></DoubleTransition>
+                </Transitions>
+
+            </Label.Transitions>
+        </Label>
+
+        <TextBox Name="NameTextBox" Text="{Binding Name}" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+            <TextBox PasswordChar="*" Name="PasswordTextBox" Text="{Binding Password}" HorizontalAlignment="Stretch"/>
+
+            <Button Content="👁️‍🗨️"
+                   Focusable="True"
+                   IsHitTestVisible="True"
+                   PointerEntered="InputElement_OnPointerPressed"
+                   PointerExited="InputElement_OnPointerReleased" />
         </StackPanel>
-        <StackPanel>
-            <Label Width="37" Height="35" Margin="10 60" Content="👁️‍🗨️"
-                    Focusable="True"
-                    IsHitTestVisible="True"
-                    PointerEntered="InputElement_OnPointerPressed"
-                    PointerExited="InputElement_OnPointerReleased" />
-        </StackPanel>
+        <Button Content="Войти в систему"
+                Command="{Binding ButtonClickCommand}" />
+
 
     </StackPanel>
 
