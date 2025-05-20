@@ -9,9 +9,9 @@ using Warehouse.Models;
 
 namespace Warehouse.ViewModels;
 
-public class MainWindowViewModel : ViewModelBase
+public class LoginFormViewModel : ViewModelBase
 {
-    MainWindowModel _model = new MainWindowModel();
+    LoginFormModel _model = new LoginFormModel();
     private string _name;
 
     public string Name
@@ -51,7 +51,7 @@ public class MainWindowViewModel : ViewModelBase
         set => _buttonClickCommand = value;
     }
 
-    public MainWindowViewModel()
+    public LoginFormViewModel()
     {
         ErrorOpacity = 0;
         ErrorText = "";
@@ -65,19 +65,33 @@ public class MainWindowViewModel : ViewModelBase
         {
             ErrorText = "Поле должно быть заполнено";
             ErrorOpacity = 0.5;
-           Task.Run( HideError);
+            Task.Run( HideError);
             return Unit.Default; // Выход из метода, если поля пустые
         }
 
         try
         {
-            // Проверка существования пользователя
             var existed = _model.ExistUser(Name, Password);
-            // Обработка результата проверки пользователя
-            // Например, показать сообщение о результате
+            if (existed)
+            {
+                ErrorText = "Успех";
+                ErrorOpacity = 0.5;
+                Task.Run( HideError);
+                return Unit.Default;
+            }
+            else
+            {
+                ErrorText = "Такого пользователя не существует";
+                ErrorOpacity = 0.5;
+                Task.Run( HideError);
+                return Unit.Default;
+            }
         }
         catch (Exception ex)
         {
+            ErrorText = ex.Message;
+            ErrorOpacity = 0.5;
+            Task.Run( HideError);
         }
 
         return Unit.Default;

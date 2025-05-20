@@ -1,0 +1,35 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Warehouse.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="vm:LoginFormViewModel"
+             x:Class="Warehouse.Views.LoginForm">
+    <StackPanel Width="300" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+        <Label Content="{Binding ErrorText, Mode=TwoWay}" Background="Red" Foreground="White"
+               Opacity="{Binding ErrorOpacity}">
+
+            <Label.Transitions>
+                <Transitions>
+                    <DoubleTransition Duration="0:0:0.3" Easing="SineEaseIn" Property="Opacity"></DoubleTransition>
+                </Transitions>
+
+            </Label.Transitions>
+        </Label>
+
+        <TextBox Name="NameTextBox" Text="{Binding Name}" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+            <TextBox PasswordChar="*" Name="PasswordTextBox" Text="{Binding Password}" HorizontalAlignment="Stretch"/>
+
+            <Button Content="👁️‍🗨️"
+                    Focusable="True"
+                    IsHitTestVisible="True"/>
+        </StackPanel>
+        <Button Content="Войти в систему"
+                Command="{Binding ButtonClickCommand}" />
+
+
+    </StackPanel>
+</UserControl>

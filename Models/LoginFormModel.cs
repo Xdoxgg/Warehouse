@@ -1,7 +1,10 @@
 ﻿using Warehouse.Classes;
+using Warehouse.Classes.Encryption;
+using Warehouse.Classes.User;
+
 namespace Warehouse.Models;
 
-public class MainWindowModel
+public class LoginFormModel
 {
     public bool ExistUser(string name, string password)
     {
@@ -15,8 +18,6 @@ public class MainWindowModel
                 return true;
             }
         }
-        
-        
 
         return false;
     }

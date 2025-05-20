@@ -24,7 +24,7 @@ public partial class App : Application
             BindingPlugins.DataValidators.RemoveAt(0);
             desktop.MainWindow = new MainWindow
             {
-                DataContext = new MainWindowViewModel(),
+                DataContext = new LoginFormViewModel(),
             };
         }
 

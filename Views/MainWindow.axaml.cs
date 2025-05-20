@@ -1,3 +1,5 @@
+using System;
+using System.Security.Cryptography;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -12,19 +14,5 @@ public partial class MainWindow : Window
         InitializeComponent();
     }
 
-    private void InputElement_OnPointerPressed(object? sender, PointerEventArgs e)
-    {
-        e.Handled = false;
-        PasswordTextBox.PasswordChar = '\0'; // Показываем пароль
-    }
 
-    private void InputElement_OnPointerReleased(object? sender, PointerEventArgs e)
-    {
-        PasswordTextBox.PasswordChar = '*'; // Восстанавливаем маскировку пароля
-    }
-
-    private void Button_OnClick(object? sender, RoutedEventArgs e)
-    {
-        (DataContext as MainWindowViewModel).ButtonClickCommand.Execute();
-    }
 }
