@@ -1,11 +1,11 @@
 ﻿using System.Configuration;
 using Microsoft.EntityFrameworkCore;
 
-namespace Warehouse.Classes.User;
+namespace Warehouse.Models;
 
-public class UserContext(DbContextOptions<UserContext> options) : DbContext(options)
+public class DatabaseContext:DbContext
 {
-    public DbSet<User> Users { get; set; }
+    public DbSet<UserClass> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

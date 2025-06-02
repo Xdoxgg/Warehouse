@@ -21,7 +21,7 @@
 
         <TextBox Name="NameTextBox" Text="{Binding Name}" />
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-            <TextBox PasswordChar="*" Name="PasswordTextBox" Text="{Binding Password}" HorizontalAlignment="Stretch"/>
+            <TextBox PasswordChar="*" Name="PasswordTextBox" Width="263" Text="{Binding Password}" HorizontalAlignment="Stretch"/>
 
             <Button Content="👁️‍🗨️"
                     Focusable="True"

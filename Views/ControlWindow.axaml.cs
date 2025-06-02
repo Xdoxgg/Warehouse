@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Warehouse.Views;
 
-public partial class RegistrationForm : UserControl
+public partial class ControlWindow : Window
 {
-    public RegistrationForm()
+    public ControlWindow()
     {
         InitializeComponent();
     }

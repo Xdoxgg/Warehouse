@@ -6,7 +6,7 @@
         xmlns:views="clr-namespace:Warehouse.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Warehouse.Views.MainWindow"
-        x:DataType="vm:LoginFormViewModel"
+        x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/icon.ico"
         xmlns:uc="using:Warehouse.Views"
         Title="Warehouse">
@@ -14,7 +14,7 @@
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:LoginFormViewModel />
+        <vm:MainWindowViewModel />
     </Design.DataContext>
 
     <uc:LoginForm />

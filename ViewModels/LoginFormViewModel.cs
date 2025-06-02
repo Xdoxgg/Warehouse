@@ -11,7 +11,7 @@ namespace Warehouse.ViewModels;
 
 public class LoginFormViewModel : ViewModelBase
 {
-    LoginFormModel _model = new LoginFormModel();
+
     private string _name;
 
     public string Name
@@ -60,18 +60,18 @@ public class LoginFormViewModel : ViewModelBase
 
     public async Task<Unit> OnButtonClick()
     {
-        // Проверка на пустые поля
+
         if (string.IsNullOrEmpty(Password) || string.IsNullOrEmpty(Name))
         {
             ErrorText = "Поле должно быть заполнено";
             ErrorOpacity = 0.5;
             Task.Run( HideError);
-            return Unit.Default; // Выход из метода, если поля пустые
+            return Unit.Default; 
         }
 
         try
         {
-            var existed = _model.ExistUser(Name, Password);
+            var existed = DatabaseInterface.ExistUser(Name, Password);
             if (existed)
             {
                 ErrorText = "Успех";

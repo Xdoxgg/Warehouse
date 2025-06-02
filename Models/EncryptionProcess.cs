@@ -1,11 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Security.Cryptography;
-using System.Text;
 
-namespace Warehouse.Classes.Encryption
+namespace Warehouse.Models
 {
-    public class EncryptionHelper
+    public class EncryptionProcess
     {
         // Задаем ключ и IV напрямую
         private static readonly byte[] Key = Convert.FromBase64String("NclL9UaBZGjELvK83bE4C6yExUyOlDaJpjGCo3W7Opk=");
