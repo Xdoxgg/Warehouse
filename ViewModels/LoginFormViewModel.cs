@@ -3,9 +3,11 @@ using System.Diagnostics;
 using System.Reactive;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using ReactiveUI;
 using Warehouse.Models;
+using Warehouse.Views;
 
 namespace Warehouse.ViewModels;
 
@@ -74,9 +76,12 @@ public class LoginFormViewModel : ViewModelBase
             var existed = DatabaseInterface.ExistUser(Name, Password);
             if (existed)
             {
-                ErrorText = "Успех";
-                ErrorOpacity = 0.5;
-                Task.Run( HideError);
+                new ControlWindow().Show();
+                var window = (App.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow;
+                if (window != null)
+                {
+                    window.Hide();
+                }
                 return Unit.Default;
             }
             else
