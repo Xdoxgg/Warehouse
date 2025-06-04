@@ -6,6 +6,9 @@ namespace Warehouse.Models;
 public class DatabaseContext:DbContext
 {
     public DbSet<UserClass> Users { get; set; }
+    public DbSet<ItemType> ItemTypes { get; set; }
+    public DbSet<Record> Records { get; set; }
+    public DbSet<Item> Items { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

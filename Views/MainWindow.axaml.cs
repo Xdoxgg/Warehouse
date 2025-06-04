@@ -13,6 +13,10 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        if (!DatabaseInterface.ExistUser("test", "test"))
+        {
+            DatabaseInterface.AddUser("test", "test");
+        }
     }
 
 
