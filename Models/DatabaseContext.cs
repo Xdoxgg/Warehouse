@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Warehouse.Models;
 
-public class DatabaseContext:DbContext
+internal class DatabaseContext:DbContext
 {
     public DbSet<UserClass> Users { get; set; }
     public DbSet<ItemType> ItemTypes { get; set; }

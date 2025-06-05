@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Warehouse.ViewModels;
 
 namespace Warehouse.Views;
 
@@ -10,11 +11,8 @@ public partial class ControlWindow : Window
     public ControlWindow()
     {
         InitializeComponent();
-        this.Closing += OnClosing;
+        DataContext = new ControlWindowViewModel();
     }
-    private void OnClosing(object? sender, System.ComponentModel.CancelEventArgs e)
-    {
-        var lifetime = Application.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
-        lifetime?.Shutdown();
-    }
+
+ 
 }

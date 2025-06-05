@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Warehouse.Models;
 
 [Table("tbl_item")]
-public class Item
+public class Item : IDataModel
 {
     private int _id;
-    private float _price;
+    private double _price;
     private string _description;
     private DateTime? _toDate;
     private int? _itemType_id;
@@ -15,6 +15,7 @@ public class Item
     private int? _recordId;
     private Record? _record;
 
+    [Column("PK_item_id")]
     public int Id
     {
         get => _id;
@@ -22,7 +23,7 @@ public class Item
     }
 
     [Column("cost")]
-    public float Price
+    public double Price
     {
         get => _price;
         set => _price = value;
@@ -41,7 +42,7 @@ public class Item
         get => _toDate;
         set => _toDate = value;
     }
-    
+
     [ForeignKey("ItemType")]
     [Column("FK_type_id")]
     public int? ItemTypeId
@@ -55,7 +56,7 @@ public class Item
         get => _item_type;
         set => _item_type = value;
     }
-    
+
     [ForeignKey("Record")]
     [Column("FK_record_id")]
     public int? RecordId
@@ -69,7 +70,4 @@ public class Item
         get => _record;
         set => _record = value;
     }
-    
-    
-    
 }

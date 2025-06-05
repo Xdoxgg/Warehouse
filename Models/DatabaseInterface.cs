@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+
 namespace Warehouse.Models;
 
 public static class DatabaseInterface
@@ -51,4 +54,16 @@ public static class DatabaseInterface
     }
     
     #endregion
+
+
+
+    public static List<Item> Items
+    {
+        get { return _context.Items.Include(i=>i.ItemType).Include(i=>i.Record).ToList(); }
+    }
+
+    public static DbSet<Record> Records
+    {
+        get { return _context.Records; }
+    }
 }

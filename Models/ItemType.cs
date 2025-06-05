@@ -2,7 +2,7 @@
 
 namespace Warehouse.Models;
 [Table("tbl_item_type")]
-public class ItemType
+public class ItemType:IDataModel
 {
     private int _id;
     private string _name;

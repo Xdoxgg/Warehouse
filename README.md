@@ -1,7 +1,7 @@
 ﻿# To-Do List: Система управления складом
 
 ## Основные задачи
-- [ ] Обеспечить хранение данных
+- [x] Обеспечить хранение данных
 - [ ] Реализовать личный кабинет для сотрудников
     - [x] Вход с использованием логина и пароля
 
@@ -35,4 +35,9 @@
 - [ ] По поставщикам и товарам, полученным от них
 - [ ] Экспорт данных
 
+---
 
+# Метки
+
+- https://docs.avaloniaui.net/docs/reference/controls/datepicker - дата и время
+- https://docs.avaloniaui.net/docs/reference/controls/datagrid/data-grid-template-columns - counters

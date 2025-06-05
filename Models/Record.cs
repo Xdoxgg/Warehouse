@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Warehouse.Models;
 [Table("tbl_record")]
-public class Record
+public class Record:IDataModel
 {
 
     private int _id;
