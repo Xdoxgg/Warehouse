@@ -6,13 +6,9 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:DataType="vm:ControlWindowViewModel"
         x:Class="Warehouse.Views.ControlWindow"
+        xmlns:uc="using:Warehouse.Views"
         Title="ControlWindow">
     <Grid ColumnDefinitions="0.3*,*,0.3*" RowDefinitions="0.3*,*,0.3*">
-        <DataGrid Margin="20" ItemsSource="{Binding Items}" 
-                  AutoGenerateColumns="True" IsReadOnly="True" 
-                  GridLinesVisibility="All"
-                  BorderThickness="1" BorderBrush="Gray">
-        </DataGrid>
-
+<UserControl Grid.Row="1" Grid.Column="1" Content="{Binding UserControl}" />
     </Grid>
 </Window>

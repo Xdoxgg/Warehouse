@@ -55,6 +55,8 @@ public class LoginFormViewModel : ViewModelBase
 
     public LoginFormViewModel()
     {
+        Name = "test";
+        Password = "test";
         ErrorOpacity = 0;
         ErrorText = "";
         ButtonClickCommand = ReactiveCommand.CreateFromTask(OnButtonClick);
@@ -80,7 +82,7 @@ public class LoginFormViewModel : ViewModelBase
                 var window = (App.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow;
                 if (window != null)
                 {
-                    window.Hide();
+                    window.Close();
                 }
                 return Unit.Default;
             }

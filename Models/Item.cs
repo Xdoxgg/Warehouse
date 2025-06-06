@@ -4,9 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Warehouse.Models;
 
 [Table("tbl_item")]
-public class Item : IDataModel
+public class Item
 {
     private int _id;
+    private string _name;
     private double _price;
     private string _description;
     private DateTime? _toDate;
@@ -22,6 +23,14 @@ public class Item : IDataModel
         set => _id = value;
     }
 
+    
+    [Column("name")]
+    public string Name
+    {
+        get => _name;
+        set => _name = value;
+    }
+    
     [Column("cost")]
     public double Price
     {

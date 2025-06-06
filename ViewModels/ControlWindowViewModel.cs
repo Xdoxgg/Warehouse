@@ -7,35 +7,27 @@ using Avalonia.Controls;
 using Microsoft.EntityFrameworkCore;
 using ReactiveUI;
 using Warehouse.Models;
+using Warehouse.Views;
 
 namespace Warehouse.ViewModels;
 
 public class ControlWindowViewModel: ViewModelBase
 {
-    private ObservableCollection<Item> _items;
-    public ObservableCollection<Item> Items
+    private object? _userControl;
+
+    public object? UserControl
     {
-        get => _items;
-        set => this.RaiseAndSetIfChanged(ref _items, value);
+        get => _userControl;
+        set => this.RaiseAndSetIfChanged(ref _userControl, value);
     }
    
     public ControlWindowViewModel()
     {
-   
-        Items = new ObservableCollection<Item>(DatabaseInterface.Items);
+        UserControl = new ItemsGridUserControl();
+    
     }
 
-   public class Person
-    {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-    
-        public Person(string firstName , string lastName)
-        {
-            FirstName = firstName;
-            LastName = lastName;
-        }
-    }
+ 
  
 
 }
