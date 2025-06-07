@@ -3,11 +3,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:Warehouse.ViewModels"
-             x:DataType="vm:ItemsGridUCViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Warehouse.Views.ItemsGridUserControl">
+             x:DataType="vm:RecordsGridUserControlViewModel"
+             x:Class="Warehouse.Views.RecordsGridUserControl">
     <StackPanel>
-        <DataGrid Margin="20" ItemsSource="{Binding Items}"
+        <DataGrid Margin="20" ItemsSource="{Binding Records}"
                   IsReadOnly="True"
                   CanUserReorderColumns="True"
                   CanUserResizeColumns="True"
@@ -17,12 +17,9 @@
                   BorderThickness="1" BorderBrush="Gray">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id"  Binding="{Binding Id}"/>
-                <DataGridTextColumn Header="Название" Binding="{Binding Name}" />
-                <DataGridTextColumn Header="Цена" Binding="{Binding Price}" />
-                <DataGridTextColumn Header="Описание" Binding="{Binding Description}" />
-                <DataGridTextColumn Header="Годен до" Binding="{Binding ToDate}"/>
-                <DataGridTextColumn Header="Категория" Binding="{Binding ItemType.Name}"/>
-                <DataGridTextColumn Header="Прибыл" Binding="{Binding Record.DateEntrance}"/>
+                <DataGridTextColumn Header="Название" Binding="{Binding DateEntrance}" />
+
+
                 
             </DataGrid.Columns>
         </DataGrid>

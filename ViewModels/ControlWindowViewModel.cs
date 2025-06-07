@@ -23,8 +23,9 @@ public class ControlWindowViewModel: ViewModelBase
    
     public ControlWindowViewModel()
     {
-        UserControl = new ItemsGridUserControl();
-    
+        // UserControl = new ItemsGridUserControl();
+        UserControl = new RecordsGridUserControl();
+
     }
 
  

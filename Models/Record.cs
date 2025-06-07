@@ -15,9 +15,9 @@ public class Record
         set => _id = value;
     }
     
-    private DateTime _dateEntrance;
+    private DateOnly _dateEntrance;
     [Column("date_entrance")]
-    public DateTime DateEntrance
+    public DateOnly DateEntrance
     {
         get => _dateEntrance;
         set => _dateEntrance = value;

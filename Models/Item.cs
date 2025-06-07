@@ -10,7 +10,7 @@ public class Item
     private string _name;
     private double _price;
     private string _description;
-    private DateTime? _toDate;
+    private DateOnly? _toDate;
     private int? _itemType_id;
     private ItemType? _item_type;
     private int? _recordId;
@@ -46,7 +46,7 @@ public class Item
     }
 
     [Column("to_date")]
-    public DateTime? ToDate
+    public DateOnly? ToDate
     {
         get => _toDate;
         set => _toDate = value;
