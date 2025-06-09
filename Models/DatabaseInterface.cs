@@ -66,7 +66,11 @@ public static class DatabaseInterface
     {
         get { return _context.Records; }
     }
-    
+
+    public static DbSet<ItemType> ItemTypes
+    {
+        get { return _context.ItemTypes; }
+    }
 
     
 }

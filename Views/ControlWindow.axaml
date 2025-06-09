@@ -9,6 +9,22 @@
         xmlns:uc="using:Warehouse.Views"
         Title="ControlWindow">
     <Grid ColumnDefinitions="0.3*,*,0.3*" RowDefinitions="0.3*,*,0.3*">
-        <UserControl Grid.Row="1" Grid.Column="1" Content="{Binding UserControl}" />
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <DataGrid Margin="20" 
+                      Name = "DataTable"
+                      IsReadOnly="False"
+                      CanUserReorderColumns="True"
+                      CanUserResizeColumns="True"
+                      CanUserSortColumns="True"
+                      GridLinesVisibility="All"
+                      Height="300"
+                      BorderThickness="1" BorderBrush="Gray">
+            </DataGrid>
+        </StackPanel>
+        <ComboBox Grid.Row="0" Grid.Column="0" Name="ComboBoxMenu" SelectionChanged="ComboBoxMenu_OnSelectionChanged">
+            <ComboBoxItem Content="Товары"></ComboBoxItem>
+            <ComboBoxItem Content="Записи"></ComboBoxItem>
+            <ComboBoxItem Content="Группы товаров"></ComboBoxItem>
+        </ComboBox>
     </Grid>
 </Window>

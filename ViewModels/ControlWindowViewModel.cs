@@ -1,34 +1,38 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using Avalonia.Controls;
-using Microsoft.EntityFrameworkCore;
 using ReactiveUI;
 using Warehouse.Models;
-using Warehouse.Views;
+
 
 namespace Warehouse.ViewModels;
 
-public class ControlWindowViewModel: ViewModelBase
+public class ControlWindowViewModel : ViewModelBase
 {
-    private object? _userControl;
+    private ObservableCollection<Item> _items;
 
-    public object? UserControl
+    public ObservableCollection<Item> Items
     {
-        get => _userControl;
-        set => this.RaiseAndSetIfChanged(ref _userControl, value);
+        get => _items;
+        set => this.RaiseAndSetIfChanged(ref _items, value);
     }
-   
+    private ObservableCollection<Record> _records;
+
+    public ObservableCollection<Record> Records
+    {
+        get => _records;
+        set => this.RaiseAndSetIfChanged(ref _records, value);
+    }
+    private ObservableCollection<ItemType> _itemTypes;
+
+    public ObservableCollection<ItemType> ItemTypes
+    {
+        get => _itemTypes;
+        set => this.RaiseAndSetIfChanged(ref _itemTypes, value);
+    }
     public ControlWindowViewModel()
     {
-        // UserControl = new ItemsGridUserControl();
-        UserControl = new RecordsGridUserControl();
-
+        Items = new ObservableCollection<Item>(DatabaseInterface.Items);
+        Records = new ObservableCollection<Record>(DatabaseInterface.Records);
+        ItemTypes= new ObservableCollection<ItemType>(DatabaseInterface.ItemTypes);
     }
-
- 
- 
-
 }
