@@ -98,6 +98,7 @@ public partial class ControlWindow : Window
     
     private void ComboBoxMenu_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
+        
         switch ((sender as ComboBox)?.SelectedIndex)
         {
             case 0:
@@ -116,5 +117,13 @@ public partial class ControlWindow : Window
                 break;
             }
         }
+
+        ((ControlWindowViewModel)DataContext).LoadDataCommand.Execute();
+    }
+
+    private void TextBox_OnTextChanged(object? sender, TextChangedEventArgs e)
+    {
+        ((ControlWindowViewModel)DataContext).SearchCommand.Execute();
+
     }
 }

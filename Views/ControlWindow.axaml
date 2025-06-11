@@ -9,9 +9,15 @@
         xmlns:uc="using:Warehouse.Views"
         Title="ControlWindow">
     <Grid ColumnDefinitions="0.3*,*,0.3*" RowDefinitions="0.3*,*,0.3*">
+        <StackPanel Grid.Column="1" Orientation="Vertical">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="{Binding SearchLabelText}" Width="200" Height="30" Margin="10"/>
+                <TextBox Text="{Binding SearchText}" TextChanged="TextBox_OnTextChanged"/>
+            </StackPanel>
+        </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="1">
-            <DataGrid Margin="20" 
-                      Name = "DataTable"
+            <DataGrid Margin="20"
+                      Name="DataTable"
                       IsReadOnly="False"
                       CanUserReorderColumns="True"
                       CanUserResizeColumns="True"
@@ -21,7 +27,8 @@
                       BorderThickness="1" BorderBrush="Gray">
             </DataGrid>
         </StackPanel>
-        <ComboBox Grid.Row="0" Grid.Column="0" Name="ComboBoxMenu" SelectionChanged="ComboBoxMenu_OnSelectionChanged">
+        <ComboBox Grid.Row="0" Grid.Column="0" Name="ComboBoxMenu" SelectionChanged="ComboBoxMenu_OnSelectionChanged"
+                  SelectedIndex="{Binding SelectedIndex}">
             <ComboBoxItem Content="Товары"></ComboBoxItem>
             <ComboBoxItem Content="Записи"></ComboBoxItem>
             <ComboBoxItem Content="Группы товаров"></ComboBoxItem>
