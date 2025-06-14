@@ -10,15 +10,19 @@
         Title="ControlWindow">
     <Grid ColumnDefinitions="0.3*,*,0.3*" RowDefinitions="0.3*,*,0.3*">
         <StackPanel Grid.Column="1" Orientation="Vertical">
-            <Label Content="Фильтрация" HorizontalAlignment="Center"/>
+            <Label Content="Фильтрация" HorizontalAlignment="Center" />
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Label Content="{Binding SearchLabelText}" Height="30" Margin="10"/>
-                <TextBox Text="{Binding SearchText}" TextChanged="TextBox_OnTextChanged" Width="200" Height="30" Margin="10"/>
+                <Label Content="{Binding SearchLabelText}" Height="30" Margin="10" />
+                <TextBox Text="{Binding SearchText}" TextChanged="TextBox_OnTextChanged" Width="200" Height="30"
+                         Margin="10" />
             </StackPanel>
-            <Button Content="Search" Width="100" Height="30" HorizontalContentAlignment="Center" HorizontalAlignment="Center" IsVisible="{Binding ButtonSearchVisibility}" Command="{Binding SearchByDateCommand}"/>
+            <Button Content="Search" Width="100" Height="30" HorizontalContentAlignment="Center"
+                    HorizontalAlignment="Center" IsVisible="{Binding ButtonSearchVisibility}"
+                    Command="{Binding SearchByDateCommand}" />
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="1">
             <DataGrid Margin="20"
+                      ItemsSource="{Binding DataGridItems}"
                       SelectionMode="Single"
                       Name="DataTable"
                       IsReadOnly="False"
@@ -30,7 +34,6 @@
                       SelectedItem="{Binding SelectedDataGridItem}"
                       BorderThickness="1" BorderBrush="Gray">
             </DataGrid>
-            <Button HorizontalContentAlignment="Center" Content="Добавить строку" Command="{Binding AddRowCommand}" Click="Button_OnClick"/>
         </StackPanel>
         <ComboBox Grid.Row="0" Grid.Column="0" Name="ComboBoxMenu" SelectionChanged="ComboBoxMenu_OnSelectionChanged"
                   SelectedIndex="{Binding SelectedIndex}">
@@ -39,6 +42,11 @@
             <ComboBoxItem Content="Группы товаров"></ComboBoxItem>
         </ComboBox>
         <StackPanel Grid.Column="1" Grid.Row="2">
+            <StackPanel Orientation="Horizontal">
+                <Button HorizontalContentAlignment="Center" Content="Добавить строку" Command="{Binding AddRowCommand}" />
+                <Button HorizontalContentAlignment="Center" Content="Сохранить изменения" Command="{Binding AddRowCommand}"/>
+
+            </StackPanel>
             <Label Content="{Binding ErrorText, Mode=TwoWay}" Background="Red" Foreground="White"
                    Opacity="{Binding ErrorOpacity}">
 
@@ -49,8 +57,8 @@
 
                 </Label.Transitions>
             </Label>
-            
-            
+
+
         </StackPanel>
     </Grid>
 </Window>

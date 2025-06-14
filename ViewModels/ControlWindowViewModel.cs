@@ -86,36 +86,8 @@ public class ControlWindowViewModel : ViewModelBase
 
     #endregion
 
-    #region DataCollections
-
-    private ObservableCollection<Item> _items;
-
-    public ObservableCollection<Item> Items
-    {
-        get => _items;
-        set => this.RaiseAndSetIfChanged(ref _items, value);
-    }
-
-    private ObservableCollection<Record> _records;
-
-    public ObservableCollection<Record> Records
-    {
-        get => _records;
-        set => this.RaiseAndSetIfChanged(ref _records, value);
-    }
-
-    private ObservableCollection<ItemType> _itemTypes;
-
-    public ObservableCollection<ItemType> ItemTypes
-    {
-        get => _itemTypes;
-        set => this.RaiseAndSetIfChanged(ref _itemTypes, value);
-    }
-
-    #endregion
-
     #region Commands
-    
+
     private ReactiveCommand<Unit, Unit> _addRowCommand;
 
     public ReactiveCommand<Unit, Unit> AddRowCommand
@@ -154,28 +126,30 @@ public class ControlWindowViewModel : ViewModelBase
 
     private async Task<Unit> LoadData()
     {
+        ObservableCollection<object> newDataGridItems;
+
         switch (SelectedIndex)
         {
             case 0:
-            {
                 ButtonSearchVisibility = false;
+                newDataGridItems = new ObservableCollection<object>(DatabaseInterface.Items);
                 SearchLabelText = "Введите название";
                 break;
-            }
             case 1:
-            {
                 ButtonSearchVisibility = true;
+                newDataGridItems = new ObservableCollection<object>(DatabaseInterface.Records);
                 SearchLabelText = "Введите дату прибытия";
                 break;
-            }
             case 2:
-            {
                 ButtonSearchVisibility = false;
+                newDataGridItems = new ObservableCollection<object>(DatabaseInterface.ItemTypes);
                 SearchLabelText = "Введите название";
                 break;
-            }
+            default:
+                return Unit.Default;
         }
 
+        DataGridItems = newDataGridItems; // Это вызовет RaisePropertyChanged автоматически
         return Unit.Default;
     }
 
@@ -185,7 +159,8 @@ public class ControlWindowViewModel : ViewModelBase
         {
             case 0:
             {
-                var result = Items.First(x => x.Name.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase));
+                var result = DatabaseInterface.Items.First(x =>
+                    x.Name.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase));
                 SelectedDataGridItem = result;
                 break;
             }
@@ -193,7 +168,8 @@ public class ControlWindowViewModel : ViewModelBase
             case 2:
             {
                 var result =
-                    ItemTypes.First(x => x.Name.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase));
+                    DatabaseInterface.ItemTypes.First(x =>
+                        x.Name.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase));
                 SelectedDataGridItem = result;
                 break;
             }
@@ -208,7 +184,7 @@ public class ControlWindowViewModel : ViewModelBase
         try
         {
             DateOnly timeSearch = DateOnly.ParseExact(SearchText, "dd.MM.yyyy", CultureInfo.InvariantCulture);
-            var result = Records.First(x => x.DateEntrance == timeSearch);
+            var result = DatabaseInterface.Records.First(x => x.DateEntrance == timeSearch);
             SelectedDataGridItem = result;
             Console.WriteLine(result.Id);
         }
@@ -232,40 +208,42 @@ public class ControlWindowViewModel : ViewModelBase
     {
         try
         {
-            int lastId;
             switch (SelectedIndex)
             {
                 case 0:
                 {
-                    lastId = Items.Last().Id+1;
-                    Items.Add(new Item()
-                    {
-                        Id = lastId,
-                        Description = "",
-                        ItemType = ItemTypes.First(),
-                        Name = "",
-                        Price = 0,
-                        Record = Records.First(),
-                        ToDate =new DateOnly(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day),
-                    });
+                    Item? lastItem = DataGridItems.Last() as Item;
+                    
+                    // lastId = DatabaseInterface.Items.Last().Id + 1;
+                    if (lastItem != null)
+                        DataGridItems.Add(new Item()
+                        {
+                            Id = lastItem.Id + 1,
+                            Description = "",
+                            ItemType = DatabaseInterface.ItemTypes.OrderBy(el => el.Id).FirstOrDefault(),
+                            Name = "",
+                            Price = 0,
+                            Record = DatabaseInterface.Records.OrderBy(el => el.DateEntrance).LastOrDefault(),
+                            ToDate = new DateOnly(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day),
+                        });
                     break;
                 }
                 case 1:
                 {
-                    lastId = Records.Last().Id+1;
-                    Records.Add(new Record()
-                    {
-                        Id = lastId
-                    });
+                    // lastId = Records.Last().Id+1;
+                    // Records.Add(new Record()
+                    // {
+                    //     Id = lastId
+                    // });
                     break;
                 }
                 case 2:
                 {
-                    lastId = ItemTypes.Last().Id+1;
-                    ItemTypes.Add(new  ItemType()
-                    {
-                        Id = lastId
-                    });
+                    // lastId = ItemTypes.Last().Id+1;
+                    // ItemTypes.Add(new  ItemType()
+                    // {
+                    //     Id = lastId
+                    // });
                     break;
                 }
             }
@@ -276,9 +254,26 @@ public class ControlWindowViewModel : ViewModelBase
             ErrorOpacity = 0.5;
             Task.Run(HideError);
         }
+
         return Unit.Default;
     }
-    
+
+    #endregion
+
+    #region DataGridCollections
+
+    private ObservableCollection<object> _dataGridItems;
+
+    public ObservableCollection<object> DataGridItems
+    {
+        get => _dataGridItems;
+        set
+        {
+            _dataGridItems = value;
+            this.RaisePropertyChanged(nameof(DataGridItems));
+        }
+    }
+
     #endregion
 
     public ControlWindowViewModel()
@@ -287,9 +282,6 @@ public class ControlWindowViewModel : ViewModelBase
         SelectedIndex = 0;
         SearchText = "";
         SearchLabelText = "";
-        Items = new ObservableCollection<Item>(DatabaseInterface.Items);
-        Records = new ObservableCollection<Record>(DatabaseInterface.Records);
-        ItemTypes = new ObservableCollection<ItemType>(DatabaseInterface.ItemTypes);
         LoadDataCommand = ReactiveCommand.CreateFromTask(LoadData);
         SearchCommand = ReactiveCommand.CreateFromTask(Search);
         SearchByDateCommand = ReactiveCommand.CreateFromTask(SearchByDate);

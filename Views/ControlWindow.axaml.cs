@@ -15,7 +15,6 @@ public partial class ControlWindow : Window
     {
         InitializeComponent();
         DataContext = new ControlWindowViewModel();
-        DataTable.DataContext = new ControlWindowViewModel();
         ComboBoxMenu.SelectedIndex = 0;
     }
 
@@ -57,7 +56,6 @@ public partial class ControlWindow : Window
             Header = "Прибыл",
             Binding = new Binding("Record.DateEntrance")
         });
-        DataTable.Bind(DataGrid.ItemsSourceProperty, new Binding("Items"));
     }
 
     private void LoadRecordsDataColumns()
@@ -73,8 +71,6 @@ public partial class ControlWindow : Window
             Header = "Дата прибытия",
             Binding = new Binding("DateEntrance")
         });
-
-        DataTable.Bind(DataGrid.ItemsSourceProperty, new Binding("Records"));
     }
 
     private void LoadItemTypesDataColumns()
@@ -96,7 +92,6 @@ public partial class ControlWindow : Window
             Binding = new Binding("Description")
         });
 
-        DataTable.Bind(DataGrid.ItemsSourceProperty, new Binding("ItemTypes"));
     }
 
     private void ComboBoxMenu_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -129,8 +124,5 @@ public partial class ControlWindow : Window
         DataTable.SelectedItem = ((ControlWindowViewModel)DataContext).SelectedDataGridItem;
     }
 
-    private void Button_OnClick(object? sender, RoutedEventArgs e)
-    {
-        ComboBoxMenu_OnSelectionChanged(ComboBoxMenu,null);
-    }
+
 }
