@@ -115,6 +115,14 @@ public class ControlWindowViewModel : ViewModelBase
     #endregion
 
     #region Commands
+    
+    private ReactiveCommand<Unit, Unit> _addRowCommand;
+
+    public ReactiveCommand<Unit, Unit> AddRowCommand
+    {
+        get => _addRowCommand;
+        set => _addRowCommand = value;
+    }
 
     private ReactiveCommand<Unit, Unit> _loadDataCommand;
 
@@ -220,6 +228,57 @@ public class ControlWindowViewModel : ViewModelBase
         return Unit.Default;
     }
 
+    private async Task<Unit> AddRow()
+    {
+        try
+        {
+            int lastId;
+            switch (SelectedIndex)
+            {
+                case 0:
+                {
+                    lastId = Items.Last().Id+1;
+                    Items.Add(new Item()
+                    {
+                        Id = lastId,
+                        Description = "",
+                        ItemType = ItemTypes.First(),
+                        Name = "",
+                        Price = 0,
+                        Record = Records.First(),
+                        ToDate =new DateOnly(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day),
+                    });
+                    break;
+                }
+                case 1:
+                {
+                    lastId = Records.Last().Id+1;
+                    Records.Add(new Record()
+                    {
+                        Id = lastId
+                    });
+                    break;
+                }
+                case 2:
+                {
+                    lastId = ItemTypes.Last().Id+1;
+                    ItemTypes.Add(new  ItemType()
+                    {
+                        Id = lastId
+                    });
+                    break;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorText = ex.Message;
+            ErrorOpacity = 0.5;
+            Task.Run(HideError);
+        }
+        return Unit.Default;
+    }
+    
     #endregion
 
     public ControlWindowViewModel()
@@ -234,5 +293,6 @@ public class ControlWindowViewModel : ViewModelBase
         LoadDataCommand = ReactiveCommand.CreateFromTask(LoadData);
         SearchCommand = ReactiveCommand.CreateFromTask(Search);
         SearchByDateCommand = ReactiveCommand.CreateFromTask(SearchByDate);
+        AddRowCommand = ReactiveCommand.CreateFromTask(AddRow);
     }
 }

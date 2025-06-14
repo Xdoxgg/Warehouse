@@ -129,5 +129,8 @@ public partial class ControlWindow : Window
         DataTable.SelectedItem = ((ControlWindowViewModel)DataContext).SelectedDataGridItem;
     }
 
-
+    private void Button_OnClick(object? sender, RoutedEventArgs e)
+    {
+        ComboBoxMenu_OnSelectionChanged(ComboBoxMenu,null);
+    }
 }

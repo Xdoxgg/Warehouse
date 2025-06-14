@@ -30,6 +30,7 @@
                       SelectedItem="{Binding SelectedDataGridItem}"
                       BorderThickness="1" BorderBrush="Gray">
             </DataGrid>
+            <Button HorizontalContentAlignment="Center" Content="Добавить строку" Command="{Binding AddRowCommand}" Click="Button_OnClick"/>
         </StackPanel>
         <ComboBox Grid.Row="0" Grid.Column="0" Name="ComboBoxMenu" SelectionChanged="ComboBoxMenu_OnSelectionChanged"
                   SelectedIndex="{Binding SelectedIndex}">
