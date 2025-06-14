@@ -15,12 +15,11 @@
                 <Label Content="{Binding SearchLabelText}" Height="30" Margin="10"/>
                 <TextBox Text="{Binding SearchText}" TextChanged="TextBox_OnTextChanged" Width="200" Height="30" Margin="10"/>
             </StackPanel>
-            <Button Content="Search" Width="100" Height="30" HorizontalContentAlignment="Center" HorizontalAlignment="Center" IsVisible="{Binding ButtonSearchVisibility}"/>
+            <Button Content="Search" Width="100" Height="30" HorizontalContentAlignment="Center" HorizontalAlignment="Center" IsVisible="{Binding ButtonSearchVisibility}" Command="{Binding SearchByDateCommand}"/>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="1">
             <DataGrid Margin="20"
                       SelectionMode="Single"
-                      
                       Name="DataTable"
                       IsReadOnly="False"
                       CanUserReorderColumns="True"
@@ -28,7 +27,6 @@
                       CanUserSortColumns="True"
                       GridLinesVisibility="All"
                       Height="300"
-                      
                       SelectedItem="{Binding SelectedDataGridItem}"
                       BorderThickness="1" BorderBrush="Gray">
             </DataGrid>

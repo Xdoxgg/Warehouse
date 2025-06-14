@@ -48,9 +48,9 @@ public class ControlWindowViewModel : ViewModelBase
     public bool ButtonSearchVisibility
     {
         get => _buttonSearchVisibility;
-        set =>  this.RaiseAndSetIfChanged(ref _buttonSearchVisibility, value);
+        set => this.RaiseAndSetIfChanged(ref _buttonSearchVisibility, value);
     }
-    
+
     private int _selectedIndex;
 
     public int SelectedIndex
@@ -132,6 +132,14 @@ public class ControlWindowViewModel : ViewModelBase
         set => _searchCommand = value;
     }
 
+    private ReactiveCommand<Unit, Unit> _searchByDateCommand;
+
+    public ReactiveCommand<Unit, Unit> SearchByDateCommand
+    {
+        get => _searchByDateCommand;
+        set => _searchByDateCommand = value;
+    }
+
     #endregion
 
     #region Functions
@@ -142,16 +150,19 @@ public class ControlWindowViewModel : ViewModelBase
         {
             case 0:
             {
+                ButtonSearchVisibility = false;
                 SearchLabelText = "Введите название";
                 break;
             }
             case 1:
             {
+                ButtonSearchVisibility = true;
                 SearchLabelText = "Введите дату прибытия";
                 break;
             }
             case 2:
             {
+                ButtonSearchVisibility = false;
                 SearchLabelText = "Введите название";
                 break;
             }
@@ -170,24 +181,7 @@ public class ControlWindowViewModel : ViewModelBase
                 SelectedDataGridItem = result;
                 break;
             }
-            case 1:
-            {
-                ButtonSearchVisibility = true;
-                try
-                {
-                    DateOnly timeSearch = DateOnly.ParseExact(SearchText, "dd.MM.yyyy", CultureInfo.InvariantCulture);
-                    var result = Records.First(x=>x.DateEntrance == timeSearch);
-                    SelectedDataGridItem = result;
-                }
-                catch (Exception ex)
-                {
-                    ErrorText = ex.Message;
-                    ErrorOpacity = 0.5;
-                    Task.Run( HideError);
-                }
-
-                break;
-            }
+            // type record search at SearchByDate() method
             case 2:
             {
                 var result =
@@ -197,6 +191,31 @@ public class ControlWindowViewModel : ViewModelBase
             }
         }
 
+
+        return Unit.Default;
+    }
+
+    private async Task<Unit> SearchByDate()
+    {
+        try
+        {
+            DateOnly timeSearch = DateOnly.ParseExact(SearchText, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            var result = Records.First(x => x.DateEntrance == timeSearch);
+            SelectedDataGridItem = result;
+            Console.WriteLine(result.Id);
+        }
+        catch (FormatException)
+        {
+            ErrorText = "Неверный формат даты(дд.мм.гггг)";
+            ErrorOpacity = 0.5;
+            Task.Run(HideError);
+        }
+        catch (Exception ex)
+        {
+            ErrorText = ex.Message;
+            ErrorOpacity = 0.5;
+            Task.Run(HideError);
+        }
 
         return Unit.Default;
     }
@@ -214,5 +233,6 @@ public class ControlWindowViewModel : ViewModelBase
         ItemTypes = new ObservableCollection<ItemType>(DatabaseInterface.ItemTypes);
         LoadDataCommand = ReactiveCommand.CreateFromTask(LoadData);
         SearchCommand = ReactiveCommand.CreateFromTask(Search);
+        SearchByDateCommand = ReactiveCommand.CreateFromTask(SearchByDate);
     }
 }
