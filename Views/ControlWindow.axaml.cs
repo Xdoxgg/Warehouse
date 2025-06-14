@@ -45,18 +45,20 @@ public partial class ControlWindow : Window
         {
             Header = "Годен до",
             Binding = new Binding("ToDate")
-        });        DataTable.Columns.Add(new DataGridTextColumn
+        });
+        DataTable.Columns.Add(new DataGridTextColumn
         {
             Header = "Категория",
             Binding = new Binding("ItemType.Name")
-        });        DataTable.Columns.Add(new DataGridTextColumn
+        });
+        DataTable.Columns.Add(new DataGridTextColumn
         {
             Header = "Прибыл",
             Binding = new Binding("Record.DateEntrance")
         });
         DataTable.Bind(DataGrid.ItemsSourceProperty, new Binding("Items"));
     }
-    
+
     private void LoadRecordsDataColumns()
     {
         DataTable.Columns.Clear();
@@ -70,7 +72,7 @@ public partial class ControlWindow : Window
             Header = "Дата прибытия",
             Binding = new Binding("DateEntrance")
         });
-        
+
         DataTable.Bind(DataGrid.ItemsSourceProperty, new Binding("Records"));
     }
 
@@ -95,10 +97,9 @@ public partial class ControlWindow : Window
 
         DataTable.Bind(DataGrid.ItemsSourceProperty, new Binding("ItemTypes"));
     }
-    
+
     private void ComboBoxMenu_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        
         switch ((sender as ComboBox)?.SelectedIndex)
         {
             case 0:
@@ -124,6 +125,6 @@ public partial class ControlWindow : Window
     private void TextBox_OnTextChanged(object? sender, TextChangedEventArgs e)
     {
         ((ControlWindowViewModel)DataContext).SearchCommand.Execute();
-
+        DataTable.SelectedItem = ((ControlWindowViewModel)DataContext).SelectedDataGridItem;
     }
 }

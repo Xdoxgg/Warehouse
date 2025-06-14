@@ -10,13 +10,17 @@
         Title="ControlWindow">
     <Grid ColumnDefinitions="0.3*,*,0.3*" RowDefinitions="0.3*,*,0.3*">
         <StackPanel Grid.Column="1" Orientation="Vertical">
-            <StackPanel Orientation="Horizontal">
-                <Label Content="{Binding SearchLabelText}" Width="200" Height="30" Margin="10"/>
-                <TextBox Text="{Binding SearchText}" TextChanged="TextBox_OnTextChanged"/>
+            <Label Content="Фильтрация" HorizontalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Label Content="{Binding SearchLabelText}" Height="30" Margin="10"/>
+                <TextBox Text="{Binding SearchText}" TextChanged="TextBox_OnTextChanged" Width="200" Height="30" Margin="10"/>
             </StackPanel>
+            <Button Content="Search" Width="100" Height="30" HorizontalContentAlignment="Center" HorizontalAlignment="Center" IsVisible="{Binding ButtonSearchVisibility}"/>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="1">
             <DataGrid Margin="20"
+                      SelectionMode="Single"
+                      
                       Name="DataTable"
                       IsReadOnly="False"
                       CanUserReorderColumns="True"
@@ -24,6 +28,8 @@
                       CanUserSortColumns="True"
                       GridLinesVisibility="All"
                       Height="300"
+                      
+                      SelectedItem="{Binding SelectedDataGridItem}"
                       BorderThickness="1" BorderBrush="Gray">
             </DataGrid>
         </StackPanel>
@@ -33,5 +39,19 @@
             <ComboBoxItem Content="Записи"></ComboBoxItem>
             <ComboBoxItem Content="Группы товаров"></ComboBoxItem>
         </ComboBox>
+        <StackPanel Grid.Column="1" Grid.Row="2">
+            <Label Content="{Binding ErrorText, Mode=TwoWay}" Background="Red" Foreground="White"
+                   Opacity="{Binding ErrorOpacity}">
+
+                <Label.Transitions>
+                    <Transitions>
+                        <DoubleTransition Duration="0:0:0.3" Easing="SineEaseIn" Property="Opacity"></DoubleTransition>
+                    </Transitions>
+
+                </Label.Transitions>
+            </Label>
+            
+            
+        </StackPanel>
     </Grid>
 </Window>

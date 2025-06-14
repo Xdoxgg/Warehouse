@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Reactive;
+using System.Threading;
 using System.Threading.Tasks;
 using ReactiveUI;
 using Warehouse.Models;
-
 
 namespace Warehouse.ViewModels;
 
@@ -13,6 +14,43 @@ public class ControlWindowViewModel : ViewModelBase
 {
     #region Properties
 
+    #region Error
+
+    private double _errorOpacity;
+
+    public double ErrorOpacity
+    {
+        get => _errorOpacity;
+        set => this.RaiseAndSetIfChanged(ref _errorOpacity, value);
+    }
+
+    public string ErrorText
+    {
+        get => _errorText;
+        set => this.RaiseAndSetIfChanged(ref _errorText, value);
+    }
+
+
+    public async Task<Unit> HideError()
+    {
+        Thread.Sleep(3000);
+        ErrorText = "";
+        ErrorOpacity = 0;
+        return Unit.Default;
+    }
+
+    private string _errorText;
+
+    #endregion
+
+    private bool _buttonSearchVisibility;
+
+    public bool ButtonSearchVisibility
+    {
+        get => _buttonSearchVisibility;
+        set =>  this.RaiseAndSetIfChanged(ref _buttonSearchVisibility, value);
+    }
+    
     private int _selectedIndex;
 
     public int SelectedIndex
@@ -35,6 +73,15 @@ public class ControlWindowViewModel : ViewModelBase
     {
         get => _searchLabelText;
         set => this.RaiseAndSetIfChanged(ref _searchLabelText, value);
+    }
+
+
+    private object _selectedDataGridItem;
+
+    public object SelectedDataGridItem
+    {
+        get => _selectedDataGridItem;
+        set => this.RaiseAndSetIfChanged(ref _selectedDataGridItem, value);
     }
 
     #endregion
@@ -84,7 +131,7 @@ public class ControlWindowViewModel : ViewModelBase
         get => _searchCommand;
         set => _searchCommand = value;
     }
-    
+
     #endregion
 
     #region Functions
@@ -115,14 +162,50 @@ public class ControlWindowViewModel : ViewModelBase
 
     private async Task<Unit> Search()
     {
-        Console.WriteLine(SearchText);
+        switch (SelectedIndex)
+        {
+            case 0:
+            {
+                var result = Items.First(x => x.Name.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase));
+                SelectedDataGridItem = result;
+                break;
+            }
+            case 1:
+            {
+                ButtonSearchVisibility = true;
+                try
+                {
+                    DateOnly timeSearch = DateOnly.ParseExact(SearchText, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+                    var result = Records.First(x=>x.DateEntrance == timeSearch);
+                    SelectedDataGridItem = result;
+                }
+                catch (Exception ex)
+                {
+                    ErrorText = ex.Message;
+                    ErrorOpacity = 0.5;
+                    Task.Run( HideError);
+                }
+
+                break;
+            }
+            case 2:
+            {
+                var result =
+                    ItemTypes.First(x => x.Name.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase));
+                SelectedDataGridItem = result;
+                break;
+            }
+        }
+
+
         return Unit.Default;
     }
-    
+
     #endregion
 
     public ControlWindowViewModel()
     {
+        ButtonSearchVisibility = true;
         SelectedIndex = 0;
         SearchText = "";
         SearchLabelText = "";
