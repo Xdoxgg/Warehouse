@@ -96,24 +96,6 @@ public partial class ControlWindow : Window
 
     private void ComboBoxMenu_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        switch ((sender as ComboBox)?.SelectedIndex)
-        {
-            case 0:
-            {
-                LoadItemsDataColumns();
-                break;
-            }
-            case 1:
-            {
-                LoadRecordsDataColumns();
-                break;
-            }
-            case 2:
-            {
-                LoadItemTypesDataColumns();
-                break;
-            }
-        }
 
         ((ControlWindowViewModel)DataContext).LoadDataCommand.Execute();
     }

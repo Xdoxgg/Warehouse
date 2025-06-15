@@ -88,13 +88,14 @@ public class ControlWindowViewModel : ViewModelBase
 
     #region Commands
 
-    private ReactiveCommand<Unit, Unit> _addRowCommand;
+    private ReactiveCommand<Unit, Unit> _saveCommand;
 
-    public ReactiveCommand<Unit, Unit> AddRowCommand
+    public ReactiveCommand<Unit, Unit> SaveCommand
     {
-        get => _addRowCommand;
-        set => _addRowCommand = value;
+        get => _saveCommand;
+        set => _saveCommand = value;
     }
+
 
     private ReactiveCommand<Unit, Unit> _loadDataCommand;
 
@@ -204,7 +205,9 @@ public class ControlWindowViewModel : ViewModelBase
         return Unit.Default;
     }
 
-    private async Task<Unit> AddRow()
+    
+
+    private async Task<Unit> Save()
     {
         try
         {
@@ -212,47 +215,24 @@ public class ControlWindowViewModel : ViewModelBase
             {
                 case 0:
                 {
-                    Item? lastItem = DataGridItems.Last() as Item;
-                    
-                    // lastId = DatabaseInterface.Items.Last().Id + 1;
-                    if (lastItem != null)
-                        DataGridItems.Add(new Item()
-                        {
-                            Id = lastItem.Id + 1,
-                            Description = "",
-                            ItemType = DatabaseInterface.ItemTypes.OrderBy(el => el.Id).FirstOrDefault(),
-                            Name = "",
-                            Price = 0,
-                            Record = DatabaseInterface.Records.OrderBy(el => el.DateEntrance).LastOrDefault(),
-                            ToDate = new DateOnly(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day),
-                        });
+                    DatabaseInterface.SaveOrUpdateItems(DataGridItems);
                     break;
                 }
                 case 1:
                 {
-                    // lastId = Records.Last().Id+1;
-                    // Records.Add(new Record()
-                    // {
-                    //     Id = lastId
-                    // });
+                    DatabaseInterface.SaveOrUpdateRecords(DataGridItems);
                     break;
                 }
                 case 2:
                 {
-                    // lastId = ItemTypes.Last().Id+1;
-                    // ItemTypes.Add(new  ItemType()
-                    // {
-                    //     Id = lastId
-                    // });
+                    DatabaseInterface.SaveOrUpdateItemTypes(DataGridItems);
                     break;
                 }
             }
         }
         catch (Exception ex)
         {
-            ErrorText = ex.Message;
-            ErrorOpacity = 0.5;
-            Task.Run(HideError);
+            Console.WriteLine(ex.Message);
         }
 
         return Unit.Default;
@@ -285,6 +265,6 @@ public class ControlWindowViewModel : ViewModelBase
         LoadDataCommand = ReactiveCommand.CreateFromTask(LoadData);
         SearchCommand = ReactiveCommand.CreateFromTask(Search);
         SearchByDateCommand = ReactiveCommand.CreateFromTask(SearchByDate);
-        AddRowCommand = ReactiveCommand.CreateFromTask(AddRow);
+        SaveCommand = ReactiveCommand.CreateFromTask(Save);
     }
 }

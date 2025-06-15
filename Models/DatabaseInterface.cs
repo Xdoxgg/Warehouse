@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +16,7 @@ public static class DatabaseInterface
         _context = new DatabaseContext();
     }
 
-    #region UserProcessing
+    #region DataProcessing
 
     
     public static void AddUser(string username, string password)
@@ -53,6 +54,110 @@ public static class DatabaseInterface
         return _context.Users.Any(el=>el.Name==username && el.Password==EncryptionProcess.Encrypt(password));
     }
     
+    
+    public static void SaveOrUpdateItems(ObservableCollection<object> items)
+    {
+        if (!_dbExists)
+        {
+            Initialize();
+        }
+
+        foreach (var item in items.OfType<Item>())
+        {
+            var existingItem = _context.Items.Include(i => i.ItemType).Include(i => i.Record).FirstOrDefault(i => i.Id == item.Id);
+
+            if (existingItem != null)
+            {
+                existingItem.Name = item.Name;
+                existingItem.Price = item.Price;
+                existingItem.Description = item.Description;
+                existingItem.ToDate = item.ToDate;
+                existingItem.RecordId = item.RecordId;
+                existingItem.ItemTypeId = item.ItemTypeId;
+                if (existingItem.ItemType?.Id != item.ItemType?.Id)
+                {
+                    existingItem.ItemType = _context.ItemTypes.Find(item.ItemType.Id);
+                }
+                if (existingItem.Record?.Id != item.Record?.Id)
+                {
+                    existingItem.Record = _context.Records.Find(item.Record.Id);
+                }
+            }
+            else
+            {
+                Item addedItem = new Item()
+                {
+                    Name = item.Name,
+                    Price = item.Price,
+                    Description = item.Description,
+                    ToDate = item.ToDate,
+                    RecordId = item.RecordId,
+                    ItemTypeId = item.ItemTypeId,
+                    ItemType = _context.ItemTypes.Find(item.ItemType.Id),
+                    Record = _context.Records.Find(item.Record.Id)
+                };
+                _context.Items.Add(addedItem);
+            }
+        }
+
+        _context.SaveChanges();
+    }
+    public static void SaveOrUpdateRecords(ObservableCollection<object> items)
+    {
+        if (!_dbExists)
+        {
+            Initialize();
+        }
+
+        foreach (var item in items.OfType<Record>())
+        {
+            var existingItem = _context.Records.FirstOrDefault(i => i.Id == item.Id);
+
+            if (existingItem != null)
+            {
+                existingItem.DateEntrance=item.DateEntrance;
+            }
+            else
+            {
+                Record addedItem = new Record()
+                {
+                    DateEntrance=item.DateEntrance,
+                };
+                _context.Records.Add(addedItem);
+            }
+        }
+
+        _context.SaveChanges();
+    }
+    public static void SaveOrUpdateItemTypes(ObservableCollection<object> items)
+    {
+        if (!_dbExists)
+        {
+            Initialize();
+        }
+
+        foreach (var item in items.OfType<ItemType>())
+        {
+            var existingItem = _context.ItemTypes.FirstOrDefault(i => i.Id == item.Id);
+
+            if (existingItem != null)
+            {
+                existingItem.Name=item.Name;
+                existingItem.Description=item.Description;
+            }
+            else
+            {
+                ItemType addedItem = new ItemType()
+                {
+                    Name = item.Name,
+                    Description=item.Description,
+                };
+                _context.ItemTypes.Add(addedItem);
+            }
+        }
+
+        _context.SaveChanges();
+    }
     #endregion
 
 

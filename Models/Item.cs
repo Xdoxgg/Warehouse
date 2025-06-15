@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Warehouse.Models;
@@ -17,6 +18,7 @@ public class Item
     private Record? _record;
 
     [Column("PK_item_id")]
+    [Display(Name = "ID")]
     public int Id
     {
         get => _id;
@@ -25,6 +27,7 @@ public class Item
 
     
     [Column("name")]
+    [Display(Name = "Название")]
     public string Name
     {
         get => _name;
@@ -32,6 +35,8 @@ public class Item
     }
     
     [Column("cost")]
+    [Display(Name = "Стоимость")]
+
     public double Price
     {
         get => _price;
@@ -39,6 +44,8 @@ public class Item
     }
 
     [Column("description")]
+    [Display(Name = "Описание")]
+
     public string Description
     {
         get => _description;
@@ -46,6 +53,8 @@ public class Item
     }
 
     [Column("to_date")]
+    [Display(Name = "Годен до")]
+
     public DateOnly? ToDate
     {
         get => _toDate;
@@ -54,11 +63,12 @@ public class Item
 
     [ForeignKey("ItemType")]
     [Column("FK_type_id")]
-    public int? ItemTypeId
+    internal int? ItemTypeId
     {
         get => _itemType_id;
         set => _itemType_id = value;
     }
+    [Display(Name = "Тип")]
 
     public ItemType ItemType
     {
@@ -68,11 +78,12 @@ public class Item
 
     [ForeignKey("Record")]
     [Column("FK_record_id")]
-    public int? RecordId
+    internal int? RecordId
     {
         get => _recordId;
         set => _recordId = value;
     }
+    [Display(Name = "Прибыл")]
 
     public Record? Record
     {

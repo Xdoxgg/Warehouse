@@ -23,6 +23,7 @@
         <StackPanel Grid.Row="1" Grid.Column="1">
             <DataGrid Margin="20"
                       ItemsSource="{Binding DataGridItems}"
+                      AutoGenerateColumns="True"
                       SelectionMode="Single"
                       Name="DataTable"
                       IsReadOnly="False"
@@ -43,8 +44,8 @@
         </ComboBox>
         <StackPanel Grid.Column="1" Grid.Row="2">
             <StackPanel Orientation="Horizontal">
-                <Button HorizontalContentAlignment="Center" Content="Добавить строку" Command="{Binding AddRowCommand}" />
-                <Button HorizontalContentAlignment="Center" Content="Сохранить изменения" Command="{Binding AddRowCommand}"/>
+               
+                <Button HorizontalContentAlignment="Center" Content="Сохранить изменения" Command="{Binding SaveCommand}"/>
 
             </StackPanel>
             <Label Content="{Binding ErrorText, Mode=TwoWay}" Background="Red" Foreground="White"
