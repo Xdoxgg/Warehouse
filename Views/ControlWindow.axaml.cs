@@ -1,12 +1,5 @@
-﻿using System;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data;
-using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
+﻿using Avalonia.Controls;
 using Warehouse.ViewModels;
-
 namespace Warehouse.Views;
 
 public partial class ControlWindow : Window
@@ -31,6 +24,7 @@ public partial class ControlWindow : Window
         ((ControlWindowViewModel)DataContext).SearchCommand.Execute();
         DataTable.SelectedItem = ((ControlWindowViewModel)DataContext).SelectedDataGridItem;
     }
+
 
 
 }

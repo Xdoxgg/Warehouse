@@ -13,6 +13,14 @@ namespace Warehouse.ViewModels;
 public class ControlWindowViewModel : ViewModelBase
 {
     #region Properties
+    
+    private ViewModelBase _currentPage;
+    public ViewModelBase CurrentPage
+    {
+        get => _currentPage;
+        set => this.RaiseAndSetIfChanged(ref _currentPage, value);
+    }
+    
 
     #region Error
 
@@ -121,9 +129,11 @@ public class ControlWindowViewModel : ViewModelBase
         set => _searchByDateCommand = value;
     }
 
+
     #endregion
 
     #region Functions
+
 
     private async Task<Unit> LoadData()
     {
@@ -135,6 +145,7 @@ public class ControlWindowViewModel : ViewModelBase
                 ButtonSearchVisibility = false;
                 newDataGridItems = new ObservableCollection<object>(DatabaseInterface.Items);
                 SearchLabelText = "Введите название";
+                CurrentPage = new EditItemViewModel(SelectedDataGridItem as Item);
                 break;
             case 1:
                 ButtonSearchVisibility = true;
@@ -266,5 +277,7 @@ public class ControlWindowViewModel : ViewModelBase
         SearchCommand = ReactiveCommand.CreateFromTask(Search);
         SearchByDateCommand = ReactiveCommand.CreateFromTask(SearchByDate);
         SaveCommand = ReactiveCommand.CreateFromTask(Save);
+
+
     }
 }

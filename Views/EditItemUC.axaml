@@ -1,0 +1,36 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Warehouse.ViewModels"
+             x:DataType="vm:EditItemViewModel"
+
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Warehouse.Views.EditItemUc">
+    <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Название" Margin="10"/>
+            <TextBox Text = "{Binding Item.Name}"  Margin="10"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Цена" Margin="10"/>
+            <TextBox Text = "{Binding Item.Price}"  Margin="10"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Описание" Margin="10"/>
+            <TextBox Text = "{Binding Item.Description}"  Margin="10"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Годен до" Margin="10"/>
+            <DatePicker DayFormat="ddd dd" SelectedDate="{Binding Item.ToDate}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Прибыл" Margin="10"/>
+            <ComboBox ItemsSource="{Binding Records}" Width="150" Height="30" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Тип" Margin="10"/>
+            <ComboBox ItemsSource="{Binding ItemTypes}" Name="ItemsComboBox" Width="150" Height="30"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>
