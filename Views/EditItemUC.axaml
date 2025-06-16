@@ -22,7 +22,8 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label Content="Годен до" Margin="10"/>
-            <TextBox Text="{Binding EditItem.ToDate}"/>
+            <!-- <TextBox Text="{Binding EditItem.ToDate}"/> -->
+            <DatePicker DayFormat="ddd dd" SelectedDate="{Binding ViewTime}"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label Content="Прибыл" Margin="10"/>
@@ -32,7 +33,7 @@
             <Label Content="Тип" Margin="10"/>
             <ComboBox ItemsSource="{Binding ItemTypes}" SelectedItem="{Binding SelectedType}" Width="150" Height="30"/>
         </StackPanel>
-        <Button Content="Save" Command="{Binding SaveCommand}" Margin="5"/>
-        <Button Content="Cancel" Command="{Binding CancelCommand}" Margin="5"/>
+        <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="5"/>
+        <Button Content="Закрыть" Command="{Binding CancelCommand}" Margin="5"/>
     </StackPanel>
 </UserControl>

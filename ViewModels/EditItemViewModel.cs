@@ -19,7 +19,14 @@ public class EditItemViewModel : ViewModelBase
     private ReactiveCommand<Unit, Unit> _cancelCommand;
     private ItemType _selectedType;
     private Record _selectedRecord;
+    private DateTimeOffset _viewTime;
 
+    public DateTimeOffset ViewTime
+    {
+        get => _viewTime;
+        set => this.RaiseAndSetIfChanged(ref _viewTime, value);
+    }
+    
     public Record SelectedRecord
     {
         get => _selectedRecord;
@@ -55,7 +62,7 @@ public class EditItemViewModel : ViewModelBase
         _original.Description = EditItem.Description;
         _original.Price = EditItem.Price;
         _original.Name = EditItem.Name;
-        _original.ToDate = EditItem.ToDate;
+        _original.ToDate =new DateOnly(ViewTime.Date.Year, ViewTime.Date.Month, ViewTime.Date.Day);
         _original.ItemType = SelectedType;
         _original.Record = SelectedRecord;
         await _updater();
@@ -74,10 +81,15 @@ public class EditItemViewModel : ViewModelBase
         SaveCommand = ReactiveCommand.CreateFromTask(Save);
         SelectedType = ItemTypes.First(el => el.Id == item.ItemType.Id);
         SelectedRecord = Records.First(el => el.Id == item.Record.Id);
+        CancelCommand = ReactiveCommand.CreateFromTask(onClose);
         SaveCommand.ThrownExceptions
             .Subscribe(ex =>
             {
                 Console.WriteLine($"Ошибка в SaveCommand: {ex.Message}");
             });
+        if (item.ToDate != null)
+        {
+            ViewTime = new DateTimeOffset(new DateTime(item.ToDate.Value.Year, item.ToDate.Value.Month, item.ToDate.Value.Day));
+        }
     }
 }

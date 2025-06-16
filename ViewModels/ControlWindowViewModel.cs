@@ -278,7 +278,27 @@ public class ControlWindowViewModel : ViewModelBase
     }
 
 
+    private async Task<Unit> RefreshTable()
+    {
+        ObservableCollection<object> newDataGridItems;
+        switch (SelectedIndex)
+        {
+            case 0:
+                newDataGridItems = new ObservableCollection<object>(DatabaseInterface.Items);
+                break;
+            case 1:
+                newDataGridItems = new ObservableCollection<object>(DatabaseInterface.Records);
+                break;
+            case 2:
+                newDataGridItems = new ObservableCollection<object>(DatabaseInterface.ItemTypes);
+                break;
+            default:
+                return Unit.Default;
+        }
 
+        DataGridItems = newDataGridItems; 
+        return Unit.Default;
+    }
     private async Task<Unit> OpenEditor()
     {
         if (SelectedDataGridItem != null)
@@ -287,7 +307,7 @@ public class ControlWindowViewModel : ViewModelBase
             {
                 case 0:
                 {
-                    EditViewModel = new EditItemViewModel(SelectedDataGridItem as Item, EditOnClose, LoadData);
+                    EditViewModel = new EditItemViewModel(SelectedDataGridItem as Item, EditOnClose, RefreshTable);
                     break;
                 }
             }
