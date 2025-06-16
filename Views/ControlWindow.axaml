@@ -46,6 +46,7 @@
             <StackPanel Orientation="Horizontal">
                
                 <Button HorizontalContentAlignment="Center" Content="Сохранить изменения" Command="{Binding SaveCommand}"/>
+                <Button HorizontalContentAlignment="Center" Content="Изменить" Command="{Binding OpenEditCommand}"/>
 
             </StackPanel>
             <Label Content="{Binding ErrorText, Mode=TwoWay}" Background="Red" Foreground="White"
@@ -61,23 +62,19 @@
 
 
         </StackPanel>
-        <StackPanel Grid.Column="2" Grid.Row="1">
-            <Label Content="{Binding Count}" />
-            
-            
-            
-        </StackPanel>
-        <!-- <ContentControl Grid.Column="2" Grid.Row="1" -->
-        <!--                 Content="{Binding CurrentPage}"> -->
-        <!--     <ContentControl.DataTemplates> -->
-        <!--         <DataTemplate DataType="{x:Type vm:EditItemViewModel}"> -->
-        <!--             <uc:EditItemUc /> -->
-        <!--         </DataTemplate> -->
-        <!--         ~1~ <DataTemplate DataType="{x:Type vm:EditRecordViewModel}"> @1@ -->
-        <!--         ~1~     <uc:EditRecordUc /> @1@ -->
-        <!--         ~1~ </DataTemplate> @1@ -->
-        <!--     </ContentControl.DataTemplates> -->
-        <!-- </ContentControl> -->
+
+        <ContentControl Grid.Column="2" Grid.Row="1" 
+                        IsVisible="{Binding IsEditorVisible}"
+                        Content="{Binding EditViewModel}">
+            <ContentControl.DataTemplates>
+                <DataTemplate DataType="{x:Type vm:EditItemViewModel}">
+                    <uc:EditItemUc />
+                </DataTemplate>
+                <!-- <DataTemplate DataType="{x:Type vm:EditRecordViewModel}"> -->
+                <!--     <uc:EditRecordUc /> -->
+                <!-- </DataTemplate> -->
+            </ContentControl.DataTemplates>
+        </ContentControl>
 
     </Grid>
 </Window>

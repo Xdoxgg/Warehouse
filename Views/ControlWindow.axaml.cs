@@ -1,4 +1,7 @@
-﻿using Avalonia.Controls;
+﻿using System.Collections.ObjectModel;
+using Avalonia.Controls;
+using Avalonia.Data;
+using Warehouse.Models;
 using Warehouse.ViewModels;
 namespace Warehouse.Views;
 
@@ -15,7 +18,7 @@ public partial class ControlWindow : Window
 
     private void ComboBoxMenu_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-
+ 
         ((ControlWindowViewModel)DataContext).LoadDataCommand.Execute();
     }
 

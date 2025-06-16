@@ -11,7 +11,5 @@ public partial class EditItemUc : UserControl
     public EditItemUc()
     {
         InitializeComponent();
-        DataContext =new EditItemViewModel(new Item());
-        // ItemsComboBox.ItemsSource
     }
 }

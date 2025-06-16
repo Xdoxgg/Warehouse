@@ -12,21 +12,29 @@ namespace Warehouse.ViewModels;
 
 public class ControlWindowViewModel : ViewModelBase
 {
-    #region Statistics
-
-
-    #endregion
 
     #region Properties
 
-    private ViewModelBase _currentPage;
+    private ViewModelBase _editViewModel;
 
-    public ViewModelBase CurrentPage
+    public ViewModelBase EditViewModel
     {
-        get => _currentPage;
-        set => this.RaiseAndSetIfChanged(ref _currentPage, value);
+        get => _editViewModel;
+        set => this.RaiseAndSetIfChanged(ref _editViewModel, value);
     }
 
+    private bool _isEditorVisible;
+    
+    public bool IsEditorVisible
+    {
+        get => _isEditorVisible;
+        set
+        {
+            _isEditorVisible = value; 
+            this.RaisePropertyChanged(nameof(IsEditorVisible));
+        }
+        
+    }
 
     #region Error
 
@@ -101,6 +109,15 @@ public class ControlWindowViewModel : ViewModelBase
     #endregion
 
     #region Commands
+    
+    private ReactiveCommand<Unit, Unit> _openEditCommand;
+
+    public ReactiveCommand<Unit, Unit> OpenEditCommand
+    {
+        get => _openEditCommand;
+        set => _openEditCommand = value;
+    }
+    
 
     private ReactiveCommand<Unit, Unit> _saveCommand;
 
@@ -142,14 +159,13 @@ public class ControlWindowViewModel : ViewModelBase
     private async Task<Unit> LoadData()
     {
         ObservableCollection<object> newDataGridItems;
-
+        await EditOnClose();
         switch (SelectedIndex)
         {
             case 0:
                 ButtonSearchVisibility = false;
                 newDataGridItems = new ObservableCollection<object>(DatabaseInterface.Items);
                 SearchLabelText = "Введите название";
-                CurrentPage = new EditItemViewModel(SelectedDataGridItem as Item);
                 break;
             case 1:
                 ButtonSearchVisibility = true;
@@ -165,7 +181,7 @@ public class ControlWindowViewModel : ViewModelBase
                 return Unit.Default;
         }
 
-        DataGridItems = newDataGridItems; // Это вызовет RaisePropertyChanged автоматически
+        DataGridItems = newDataGridItems; 
         return Unit.Default;
     }
 
@@ -253,6 +269,36 @@ public class ControlWindowViewModel : ViewModelBase
         return Unit.Default;
     }
 
+    private async Task<Unit> EditOnClose()
+    {
+        IsEditorVisible = false;
+        this.RaisePropertyChanged(nameof(IsEditorVisible));
+        this.RaisePropertyChanged(nameof(DataGridItems));
+        return Unit.Default;
+    }
+
+
+
+    private async Task<Unit> OpenEditor()
+    {
+        if (SelectedDataGridItem != null)
+        {
+            switch (SelectedIndex)
+            {
+                case 0:
+                {
+                    EditViewModel = new EditItemViewModel(SelectedDataGridItem as Item, EditOnClose, LoadData);
+                    break;
+                }
+            }
+         
+
+            IsEditorVisible = true;
+            this.RaisePropertyChanged(nameof(EditViewModel));
+            this.RaisePropertyChanged(nameof(IsEditorVisible));
+        }
+        return Unit.Default;
+    }
     #endregion
 
     #region DataGridCollections
@@ -277,9 +323,11 @@ public class ControlWindowViewModel : ViewModelBase
         SelectedIndex = 0;
         SearchText = "";
         SearchLabelText = "";
+        IsEditorVisible = false;
         LoadDataCommand = ReactiveCommand.CreateFromTask(LoadData);
         SearchCommand = ReactiveCommand.CreateFromTask(Search);
         SearchByDateCommand = ReactiveCommand.CreateFromTask(SearchByDate);
         SaveCommand = ReactiveCommand.CreateFromTask(Save);
+        OpenEditCommand= ReactiveCommand.CreateFromTask(OpenEditor);
     }
 }

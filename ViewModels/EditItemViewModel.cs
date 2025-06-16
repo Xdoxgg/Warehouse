@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Reactive;
+using System.Threading.Tasks;
 using ReactiveUI;
 using Warehouse.Models;
 
@@ -7,25 +10,74 @@ namespace Warehouse.ViewModels;
 
 public class EditItemViewModel : ViewModelBase
 {
-   
-
     public ObservableCollection<Record> Records { get; }
-    
-    public ObservableCollection<ItemType> ItemTypes { get; }
-    private Item _item;
 
-    public Item Item
+    public ObservableCollection<ItemType> ItemTypes { get; }
+    private Item _editItem;
+    private readonly Item _original;
+    private ReactiveCommand<Unit, Unit> _saveCommand;
+    private ReactiveCommand<Unit, Unit> _cancelCommand;
+    private ItemType _selectedType;
+    private Record _selectedRecord;
+
+    public Record SelectedRecord
     {
-        get => _item;
-        set => this.RaiseAndSetIfChanged(ref _item, value);
+        get => _selectedRecord;
+        set => this.RaiseAndSetIfChanged(ref _selectedRecord, value);
     }
 
-    public EditItemViewModel(Item item)
+    public ItemType SelectedType
     {
-        
-        ItemTypes = new ObservableCollection<ItemType>( DatabaseInterface.ItemTypes);
-        Records = new ObservableCollection<Record>( DatabaseInterface.Records);
-        Item = item;
+        get => _selectedType;
+        set => this.RaiseAndSetIfChanged(ref _selectedType, value);
+    }
+
+    public ReactiveCommand<Unit, Unit> SaveCommand
+    {
+        get => _saveCommand;
+        set => _saveCommand = value;
+    }
+
+    public ReactiveCommand<Unit, Unit> CancelCommand
+    {
+        get => _cancelCommand;
+        set => _cancelCommand = value;
+    }
+
+    public Item EditItem
+    {
+        get => _editItem;
+        set => this.RaiseAndSetIfChanged(ref _editItem, value);
+    }
     
+    private async Task<Unit> Save()
+    {
+        _original.Description = EditItem.Description;
+        _original.Price = EditItem.Price;
+        _original.Name = EditItem.Name;
+        _original.ToDate = EditItem.ToDate;
+        _original.ItemType = SelectedType;
+        _original.Record = SelectedRecord;
+        await _updater();
+        return Unit.Default;
+    }
+
+    private Func<Task> _updater;
+
+    public EditItemViewModel(Item item, Func<Task> onClose, Func<Task> onDataGridUpdate)
+    {
+        _updater = onDataGridUpdate;
+        _original = item;
+        ItemTypes = new ObservableCollection<ItemType>(DatabaseInterface.ItemTypes);
+        Records = new ObservableCollection<Record>(DatabaseInterface.Records);
+        EditItem = item;
+        SaveCommand = ReactiveCommand.CreateFromTask(Save);
+        SelectedType = ItemTypes.First(el => el.Id == item.ItemType.Id);
+        SelectedRecord = Records.First(el => el.Id == item.Record.Id);
+        SaveCommand.ThrownExceptions
+            .Subscribe(ex =>
+            {
+                Console.WriteLine($"Ошибка в SaveCommand: {ex.Message}");
+            });
     }
 }

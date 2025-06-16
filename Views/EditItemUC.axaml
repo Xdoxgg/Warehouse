@@ -10,27 +10,29 @@
     <StackPanel Orientation="Vertical">
         <StackPanel Orientation="Horizontal">
             <Label Content="Название" Margin="10"/>
-            <TextBox Text = "{Binding Item.Name}"  Margin="10"/>
+            <TextBox Text = "{Binding EditItem.Name}"  Margin="10"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label Content="Цена" Margin="10"/>
-            <TextBox Text = "{Binding Item.Price}"  Margin="10"/>
+            <TextBox Text = "{Binding EditItem.Price}"  Margin="10"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label Content="Описание" Margin="10"/>
-            <TextBox Text = "{Binding Item.Description}"  Margin="10"/>
+            <TextBox Text = "{Binding EditItem.Description}"  Margin="10"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label Content="Годен до" Margin="10"/>
-            <DatePicker DayFormat="ddd dd" SelectedDate="{Binding Item.ToDate}"/>
+            <TextBox Text="{Binding EditItem.ToDate}"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label Content="Прибыл" Margin="10"/>
-            <ComboBox ItemsSource="{Binding Records}" Width="150" Height="30" />
+            <ComboBox ItemsSource="{Binding Records}" SelectedItem="{Binding SelectedRecord}" Width="150" Height="30" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label Content="Тип" Margin="10"/>
-            <ComboBox ItemsSource="{Binding ItemTypes}" Name="ItemsComboBox" Width="150" Height="30"/>
+            <ComboBox ItemsSource="{Binding ItemTypes}" SelectedItem="{Binding SelectedType}" Width="150" Height="30"/>
         </StackPanel>
+        <Button Content="Save" Command="{Binding SaveCommand}" Margin="5"/>
+        <Button Content="Cancel" Command="{Binding CancelCommand}" Margin="5"/>
     </StackPanel>
 </UserControl>
