@@ -61,17 +61,23 @@
 
 
         </StackPanel>
-        <ContentControl Grid.Column="2" Grid.Row="1"
-                        Content="{Binding CurrentPage}">
-            <ContentControl.DataTemplates>
-                <DataTemplate DataType="{x:Type vm:EditItemViewModel}">
-                    <uc:EditItemUc />
-                </DataTemplate>
-                <!-- <DataTemplate DataType="{x:Type vm:EditRecordViewModel}"> -->
-                <!--     <uc:EditRecordUc /> -->
-                <!-- </DataTemplate> -->
-            </ContentControl.DataTemplates>
-        </ContentControl>
+        <StackPanel Grid.Column="2" Grid.Row="1">
+            <Label Content="{Binding Count}" />
+            
+            
+            
+        </StackPanel>
+        <!-- <ContentControl Grid.Column="2" Grid.Row="1" -->
+        <!--                 Content="{Binding CurrentPage}"> -->
+        <!--     <ContentControl.DataTemplates> -->
+        <!--         <DataTemplate DataType="{x:Type vm:EditItemViewModel}"> -->
+        <!--             <uc:EditItemUc /> -->
+        <!--         </DataTemplate> -->
+        <!--         ~1~ <DataTemplate DataType="{x:Type vm:EditRecordViewModel}"> @1@ -->
+        <!--         ~1~     <uc:EditRecordUc /> @1@ -->
+        <!--         ~1~ </DataTemplate> @1@ -->
+        <!--     </ContentControl.DataTemplates> -->
+        <!-- </ContentControl> -->
 
     </Grid>
 </Window>
