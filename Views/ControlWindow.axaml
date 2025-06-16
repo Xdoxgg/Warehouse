@@ -44,9 +44,8 @@
         </ComboBox>
         <StackPanel Grid.Column="1" Grid.Row="2">
             <StackPanel Orientation="Horizontal">
-
-                <Button HorizontalContentAlignment="Center" Content="Сохранить изменения"
-                        Command="{Binding SaveCommand}" />
+               
+                <Button HorizontalContentAlignment="Center" Content="Сохранить изменения" Command="{Binding SaveCommand}"/>
 
             </StackPanel>
             <Label Content="{Binding ErrorText, Mode=TwoWay}" Background="Red" Foreground="White"
