@@ -7,33 +7,30 @@
 
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Warehouse.Views.EditItemUc">
-    <StackPanel Orientation="Vertical">
+    <Border BorderBrush="Black" BorderThickness="2" Padding="10" Margin="10" Width="450">
         <StackPanel Orientation="Horizontal">
-            <Label Content="Название" Margin="10"/>
-            <TextBox Text = "{Binding EditItem.Name}"  Margin="10"/>
+
+            <StackPanel>
+                <Label Content="Название" Margin="10" Height="30"/>
+                <Label Content="Цена" Margin="10" Height="30"/>
+                <Label Content="Описание" Margin="10" Height="30"/>
+                <Label Content="Годен до" Margin="10" Height="30"/>
+                <Label Content="Прибыл" Margin="10" Height="30"/>
+                <Label Content="Тип" Margin="10" Height="30"/>
+                <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="5" Height="30"/>
+            </StackPanel>
+            <StackPanel>
+                <TextBox Text="{Binding EditItem.Name}" Margin="10" Height="30"/>
+                <TextBox Text="{Binding EditItem.Price}" Margin="10" Height="30"/>
+                <TextBox Text="{Binding EditItem.Description}" Margin="10" Height="30"/>
+                <DatePicker DayFormat="ddd dd" SelectedDate="{Binding ViewTime}" Height="30"/>
+                <ComboBox ItemsSource="{Binding Records}" SelectedItem="{Binding SelectedRecord}" Width="150"
+                          Height="30" />
+                <ComboBox ItemsSource="{Binding ItemTypes}" SelectedItem="{Binding SelectedType}" Width="150"
+                          Height="30" />
+                <Button Content="Закрыть" Command="{Binding CancelCommand}" Margin="10" Height="30"/>
+
+            </StackPanel>
         </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Label Content="Цена" Margin="10"/>
-            <TextBox Text = "{Binding EditItem.Price}"  Margin="10"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Label Content="Описание" Margin="10"/>
-            <TextBox Text = "{Binding EditItem.Description}"  Margin="10"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Label Content="Годен до" Margin="10"/>
-            <!-- <TextBox Text="{Binding EditItem.ToDate}"/> -->
-            <DatePicker DayFormat="ddd dd" SelectedDate="{Binding ViewTime}"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Label Content="Прибыл" Margin="10"/>
-            <ComboBox ItemsSource="{Binding Records}" SelectedItem="{Binding SelectedRecord}" Width="150" Height="30" />
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Label Content="Тип" Margin="10"/>
-            <ComboBox ItemsSource="{Binding ItemTypes}" SelectedItem="{Binding SelectedType}" Width="150" Height="30"/>
-        </StackPanel>
-        <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="5"/>
-        <Button Content="Закрыть" Command="{Binding CancelCommand}" Margin="5"/>
-    </StackPanel>
+    </Border>
 </UserControl>

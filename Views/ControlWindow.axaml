@@ -7,8 +7,10 @@
         x:DataType="vm:ControlWindowViewModel"
         x:Class="Warehouse.Views.ControlWindow"
         xmlns:uc="using:Warehouse.Views"
-        Title="ControlWindow">
-    <Grid ColumnDefinitions="0.3*,*,0.3*" RowDefinitions="0.3*,*,0.3*">
+        Title="ControlWindow"
+        WindowState="Maximized"
+        CanResize="False">
+    <Grid ColumnDefinitions="0.3*,*,0.6*" RowDefinitions="0.3*,*,0.3*">
         <StackPanel Grid.Column="1" Orientation="Vertical">
             <Label Content="Фильтрация" HorizontalAlignment="Center" />
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -63,16 +65,16 @@
 
         </StackPanel>
 
-        <ContentControl Grid.Column="2" Grid.Row="1" 
+        <ContentControl Grid.Column="2" Grid.Row="1"
                         IsVisible="{Binding IsEditorVisible}"
                         Content="{Binding EditViewModel}">
             <ContentControl.DataTemplates>
                 <DataTemplate DataType="{x:Type vm:EditItemViewModel}">
                     <uc:EditItemUc />
                 </DataTemplate>
-                <!-- <DataTemplate DataType="{x:Type vm:EditRecordViewModel}"> -->
-                <!--     <uc:EditRecordUc /> -->
-                <!-- </DataTemplate> -->
+                <DataTemplate DataType="{x:Type vm:EditRecordViewModel}">
+                    <uc:EditRecordUC />
+                </DataTemplate>
             </ContentControl.DataTemplates>
         </ContentControl>
 

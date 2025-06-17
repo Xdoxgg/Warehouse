@@ -55,14 +55,14 @@ public static class DatabaseInterface
     }
     
     
-    public static void SaveOrUpdateItems(ObservableCollection<object> items)
+    public static void SaveOrUpdateItems(ObservableCollection<Item> items)
     {
         if (!_dbExists)
         {
             Initialize();
         }
 
-        foreach (var item in items.OfType<Item>())
+        foreach (var item in items)
         {
             var existingItem = _context.Items.Include(i => i.ItemType).Include(i => i.Record).FirstOrDefault(i => i.Id == item.Id);
 

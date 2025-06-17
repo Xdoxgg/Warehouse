@@ -181,7 +181,7 @@ public class ControlWindowViewModel : ViewModelBase
                 return Unit.Default;
         }
 
-        DataGridItems = newDataGridItems; 
+        DataGridItems = newDataGridItems;
         return Unit.Default;
     }
 
@@ -245,7 +245,7 @@ public class ControlWindowViewModel : ViewModelBase
             {
                 case 0:
                 {
-                    DatabaseInterface.SaveOrUpdateItems(DataGridItems);
+                    // DatabaseInterface.SaveOrUpdateItems(DataGridItems);
                     break;
                 }
                 case 1:
@@ -310,6 +310,11 @@ public class ControlWindowViewModel : ViewModelBase
                     EditViewModel = new EditItemViewModel(SelectedDataGridItem as Item, EditOnClose, RefreshTable);
                     break;
                 }
+                case 1:
+                {
+                    EditViewModel = new EditRecordViewModel(SelectedDataGridItem as Record, EditOnClose, RefreshTable);
+                    break;
+                }
             }
          
 
@@ -337,6 +342,8 @@ public class ControlWindowViewModel : ViewModelBase
 
     #endregion
 
+    
+    
     public ControlWindowViewModel()
     {
         ButtonSearchVisibility = true;

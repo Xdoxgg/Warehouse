@@ -11,12 +11,12 @@ namespace Warehouse.ViewModels;
 public class EditItemViewModel : ViewModelBase
 {
     public ObservableCollection<Record> Records { get; }
-
     public ObservableCollection<ItemType> ItemTypes { get; }
     private Item _editItem;
     private readonly Item _original;
     private ReactiveCommand<Unit, Unit> _saveCommand;
     private ReactiveCommand<Unit, Unit> _cancelCommand;
+    private ReactiveCommand<Unit, Unit> _clearDateCommand;
     private ItemType _selectedType;
     private Record _selectedRecord;
     private DateTimeOffset _viewTime;
@@ -51,6 +51,12 @@ public class EditItemViewModel : ViewModelBase
         set => _cancelCommand = value;
     }
 
+    public ReactiveCommand<Unit, Unit> ClearDateCommand
+    {
+        get=> _clearDateCommand;
+        set=>_clearDateCommand = value;
+    }
+    
     public Item EditItem
     {
         get => _editItem;
@@ -91,5 +97,10 @@ public class EditItemViewModel : ViewModelBase
         {
             ViewTime = new DateTimeOffset(new DateTime(item.ToDate.Value.Year, item.ToDate.Value.Month, item.ToDate.Value.Day));
         }
+        ClearDateCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            ViewTime = new  DateTimeOffset();
+
+        });
     }
 }
