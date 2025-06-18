@@ -28,7 +28,7 @@
                       AutoGenerateColumns="True"
                       SelectionMode="Single"
                       Name="DataTable"
-                      IsReadOnly="False"
+                      IsReadOnly="True"
                       CanUserReorderColumns="True"
                       CanUserResizeColumns="True"
                       CanUserSortColumns="True"
@@ -48,6 +48,7 @@
             <StackPanel Orientation="Horizontal">
                
                 <Button HorizontalContentAlignment="Center" Content="Сохранить изменения" Command="{Binding SaveCommand}"/>
+                <Button HorizontalContentAlignment="Center" Content="Добавить строку" Command="{Binding AddRowCommand}"/>
                 <Button HorizontalContentAlignment="Center" Content="Изменить" Command="{Binding OpenEditCommand}"/>
 
             </StackPanel>

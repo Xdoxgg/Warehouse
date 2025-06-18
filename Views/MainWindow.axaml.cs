@@ -15,7 +15,7 @@ public partial class MainWindow : Window
         InitializeComponent();
         if (!DatabaseInterface.ExistUser("test", "test"))
         {
-            DatabaseInterface.AddUser("test", "test");
+            DatabaseInterface.AddUser("test", "test", true);
         }
     }
 

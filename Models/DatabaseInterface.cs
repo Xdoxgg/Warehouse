@@ -18,8 +18,7 @@ public static class DatabaseInterface
 
     #region DataProcessing
 
-    
-    public static void AddUser(string username, string password)
+    public static void AddUser(string username, string password, bool type)
     {
         if (!_dbExists)
         {
@@ -29,7 +28,8 @@ public static class DatabaseInterface
         UserClass user = new UserClass
         {
             Name = username,
-            Password = EncryptionProcess.Encrypt(password)
+            Password = EncryptionProcess.Encrypt(password),
+            Type = type
         };
 
         if (!_context.Users.Any(el => el.Name == user.Name && el.Password == user.Password))
@@ -41,8 +41,6 @@ public static class DatabaseInterface
         {
             throw new ArgumentException("Username already exists");
         }
-        
-        
     }
 
     public static bool ExistUser(string username, string password)
@@ -51,20 +49,22 @@ public static class DatabaseInterface
         {
             Initialize();
         }
-        return _context.Users.Any(el=>el.Name==username && el.Password==EncryptionProcess.Encrypt(password));
+
+        return _context.Users.Any(el => el.Name == username && el.Password == EncryptionProcess.Encrypt(password));
     }
-    
-    
-    public static void SaveOrUpdateItems(ObservableCollection<Item> items)
+
+
+    public static void SaveOrUpdateItems(ObservableCollection<object> items)
     {
         if (!_dbExists)
         {
             Initialize();
         }
 
-        foreach (var item in items)
+        foreach (var item in items.OfType<Item>())
         {
-            var existingItem = _context.Items.Include(i => i.ItemType).Include(i => i.Record).FirstOrDefault(i => i.Id == item.Id);
+            var existingItem = _context.Items.Include(i => i.ItemType).Include(i => i.Record)
+                .FirstOrDefault(i => i.Id == item.Id);
 
             if (existingItem != null)
             {
@@ -78,6 +78,7 @@ public static class DatabaseInterface
                 {
                     existingItem.ItemType = _context.ItemTypes.Find(item.ItemType.Id);
                 }
+
                 if (existingItem.Record?.Id != item.Record?.Id)
                 {
                     existingItem.Record = _context.Records.Find(item.Record.Id);
@@ -102,6 +103,7 @@ public static class DatabaseInterface
 
         _context.SaveChanges();
     }
+
     public static void SaveOrUpdateRecords(ObservableCollection<object> items)
     {
         if (!_dbExists)
@@ -115,13 +117,13 @@ public static class DatabaseInterface
 
             if (existingItem != null)
             {
-                existingItem.DateEntrance=item.DateEntrance;
+                existingItem.DateEntrance = item.DateEntrance;
             }
             else
             {
                 Record addedItem = new Record()
                 {
-                    DateEntrance=item.DateEntrance,
+                    DateEntrance = item.DateEntrance,
                 };
                 _context.Records.Add(addedItem);
             }
@@ -129,6 +131,7 @@ public static class DatabaseInterface
 
         _context.SaveChanges();
     }
+
     public static void SaveOrUpdateItemTypes(ObservableCollection<object> items)
     {
         if (!_dbExists)
@@ -142,15 +145,15 @@ public static class DatabaseInterface
 
             if (existingItem != null)
             {
-                existingItem.Name=item.Name;
-                existingItem.Description=item.Description;
+                existingItem.Name = item.Name;
+                existingItem.Description = item.Description;
             }
             else
             {
                 ItemType addedItem = new ItemType()
                 {
                     Name = item.Name,
-                    Description=item.Description,
+                    Description = item.Description,
                 };
                 _context.ItemTypes.Add(addedItem);
             }
@@ -158,13 +161,13 @@ public static class DatabaseInterface
 
         _context.SaveChanges();
     }
-    #endregion
 
+    #endregion
 
 
     public static List<Item> Items
     {
-        get { return _context.Items.Include(i=>i.ItemType).Include(i=>i.Record).ToList(); }
+        get { return _context.Items.Include(i => i.ItemType).Include(i => i.Record).ToList(); }
     }
 
     public static DbSet<Record> Records
@@ -176,6 +179,4 @@ public static class DatabaseInterface
     {
         get { return _context.ItemTypes; }
     }
-
-    
 }

@@ -91,5 +91,25 @@ public class Item
         set => _record = value;
     }
 
-   
+    private bool _isSend;
+    
+    [Display(Name = "Отправлен")]
+    [Column("is_send")]
+    public bool IsSend
+    {
+        get => _isSend;
+        set => _isSend = value;
+    }
+    
+    private bool _isReverted;
+ 
+    [Display(Name = "Вернули")]
+    [Column("is_reverted")]
+    public bool IsReverted
+    {
+        get => _isReverted;
+        set => _isReverted = value;
+    }
+
+
 }

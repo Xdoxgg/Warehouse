@@ -125,6 +125,13 @@ public class ControlWindowViewModel : ViewModelBase
         set => _saveCommand = value;
     }
 
+    private ReactiveCommand<Unit, Unit> _addRowCommand;
+
+    public ReactiveCommand<Unit, Unit> AddRowCommand
+    {
+        get => _addRowCommand;
+        set => _addRowCommand = value;
+    }
 
     private ReactiveCommand<Unit, Unit> _loadDataCommand;
 
@@ -153,6 +160,34 @@ public class ControlWindowViewModel : ViewModelBase
     #endregion
 
     #region Functions
+
+    private async Task<Unit> AddRow()
+    {
+        switch (SelectedIndex)
+        {
+            case 0:
+                DataGridItems.Add(new Item
+                {
+                    Id = (DataGridItems.Last() != null) ? (DataGridItems.Last() as Item).Id + 1 : 1,
+                    Description = "",
+                    Name = "",
+                    ItemType = null,
+                    Record = null,
+                    Price = 0
+                });
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            default:
+                return Unit.Default;
+        }
+
+        // this.RaisePropertyChanged(nameof(DataGridItems));
+        return Unit.Default;
+    }
+
 
     private async Task<Unit> LoadData()
     {
@@ -243,7 +278,7 @@ public class ControlWindowViewModel : ViewModelBase
             {
                 case 0:
                 {
-                    // DatabaseInterface.SaveOrUpdateItems(DataGridItems);
+                    DatabaseInterface.SaveOrUpdateItems(DataGridItems);
                     break;
                 }
                 case 1:
@@ -277,22 +312,13 @@ public class ControlWindowViewModel : ViewModelBase
 
     private async Task<Unit> RefreshTable()
     {
-        ObservableCollection<object> newDataGridItems;
-        switch (SelectedIndex)
+        ObservableCollection<object> newDataGridItems = new ObservableCollection<object>();
+        foreach (var item in DataGridItems)
         {
-            case 0:
-                newDataGridItems = new ObservableCollection<object>(DatabaseInterface.Items);
-                break;
-            case 1:
-                newDataGridItems = new ObservableCollection<object>(DatabaseInterface.Records);
-                break;
-            case 2:
-                newDataGridItems = new ObservableCollection<object>(DatabaseInterface.ItemTypes);
-                break;
-            default:
-                return Unit.Default;
+            newDataGridItems.Add(item);
         }
 
+        DataGridItems.Clear();
         DataGridItems = newDataGridItems;
         return Unit.Default;
     }
@@ -322,7 +348,6 @@ public class ControlWindowViewModel : ViewModelBase
                 }
             }
 
-
             IsEditorVisible = true;
             this.RaisePropertyChanged(nameof(EditViewModel));
             this.RaisePropertyChanged(nameof(IsEditorVisible));
@@ -340,6 +365,7 @@ public class ControlWindowViewModel : ViewModelBase
     public ObservableCollection<object> DataGridItems
     {
         get => _dataGridItems;
+
         set
         {
             _dataGridItems = value;
@@ -348,7 +374,6 @@ public class ControlWindowViewModel : ViewModelBase
     }
 
     #endregion
-
 
     public ControlWindowViewModel()
     {
@@ -362,5 +387,6 @@ public class ControlWindowViewModel : ViewModelBase
         SearchByDateCommand = ReactiveCommand.CreateFromTask(SearchByDate);
         SaveCommand = ReactiveCommand.CreateFromTask(Save);
         OpenEditCommand = ReactiveCommand.CreateFromTask(OpenEditor);
+        AddRowCommand = ReactiveCommand.CreateFromTask(AddRow);
     }
 }
