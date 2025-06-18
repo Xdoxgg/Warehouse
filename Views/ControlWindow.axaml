@@ -75,6 +75,9 @@
                 <DataTemplate DataType="{x:Type vm:EditRecordViewModel}">
                     <uc:EditRecordUC />
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:EditItemTypeViewModel}">
+                    <uc:EditItemType />
+                </DataTemplate>
             </ContentControl.DataTemplates>
         </ContentControl>
 

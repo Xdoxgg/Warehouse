@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Threading.Tasks;
 using ReactiveUI;
@@ -7,15 +6,15 @@ using Warehouse.Models;
 
 namespace Warehouse.ViewModels;
 
-public class EditRecordViewModel : ViewModelBase
+public class EditItemTypeViewModel:ViewModelBase
 {
-    private Record _record;
-    private Record _original;
+    private ItemType _type;
+    private ItemType _original;
 
-    public Record Record
+    public ItemType Type
     {
-        get => _record;
-        set => this.RaiseAndSetIfChanged(ref _record, value);
+        get => _type;
+        set => this.RaiseAndSetIfChanged(ref _type, value);
     }
 
     private Func<Task> _updater;
@@ -37,29 +36,22 @@ public class EditRecordViewModel : ViewModelBase
 
     private async Task<Unit> Save()
     {
-        _original.DateEntrance =new DateOnly(ViewTime.Date.Year, ViewTime.Date.Month, ViewTime.Date.Day);
-        
+        _original.Name  = Type.Name;
+        _original.Description = Type.Description;
         await _updater();
         return Unit.Default;
     }
     
-    private DateTimeOffset _viewTime;
-
-    public DateTimeOffset ViewTime
-    {
-        get => _viewTime;
-        set => this.RaiseAndSetIfChanged(ref _viewTime, value);
-    }
-
-    public EditRecordViewModel(Record record, Func<Task> onClose, Func<Task> onDataGridUpdate)
+ 
+    public EditItemTypeViewModel(ItemType record, Func<Task> onClose, Func<Task> onDataGridUpdate)
     {
         _updater = onDataGridUpdate;
         _original = record;
+        Type = record;
         SaveCommand = ReactiveCommand.CreateFromTask(Save);
         CancelCommand = ReactiveCommand.CreateFromTask(onClose);
         SaveCommand.ThrownExceptions
             .Subscribe(ex => { Console.WriteLine($"Ошибка в SaveCommand: {ex.Message}"); });
-        ViewTime = new DateTimeOffset(new DateTime(record.DateEntrance.Year,record.DateEntrance.Month, record.DateEntrance.Day));
-
+        
     }
 }

@@ -12,7 +12,6 @@ namespace Warehouse.ViewModels;
 
 public class ControlWindowViewModel : ViewModelBase
 {
-
     #region Properties
 
     private ViewModelBase _editViewModel;
@@ -24,16 +23,15 @@ public class ControlWindowViewModel : ViewModelBase
     }
 
     private bool _isEditorVisible;
-    
+
     public bool IsEditorVisible
     {
         get => _isEditorVisible;
         set
         {
-            _isEditorVisible = value; 
+            _isEditorVisible = value;
             this.RaisePropertyChanged(nameof(IsEditorVisible));
         }
-        
     }
 
     #region Error
@@ -109,7 +107,7 @@ public class ControlWindowViewModel : ViewModelBase
     #endregion
 
     #region Commands
-    
+
     private ReactiveCommand<Unit, Unit> _openEditCommand;
 
     public ReactiveCommand<Unit, Unit> OpenEditCommand
@@ -117,7 +115,7 @@ public class ControlWindowViewModel : ViewModelBase
         get => _openEditCommand;
         set => _openEditCommand = value;
     }
-    
+
 
     private ReactiveCommand<Unit, Unit> _saveCommand;
 
@@ -259,7 +257,6 @@ public class ControlWindowViewModel : ViewModelBase
                     break;
                 }
             }
-
         }
         catch (Exception ex)
         {
@@ -296,9 +293,10 @@ public class ControlWindowViewModel : ViewModelBase
                 return Unit.Default;
         }
 
-        DataGridItems = newDataGridItems; 
+        DataGridItems = newDataGridItems;
         return Unit.Default;
     }
+
     private async Task<Unit> OpenEditor()
     {
         if (SelectedDataGridItem != null)
@@ -315,15 +313,24 @@ public class ControlWindowViewModel : ViewModelBase
                     EditViewModel = new EditRecordViewModel(SelectedDataGridItem as Record, EditOnClose, RefreshTable);
                     break;
                 }
+                case 2:
+                {
+                    EditViewModel = new EditItemTypeViewModel(SelectedDataGridItem as ItemType, EditOnClose,
+                        RefreshTable);
+
+                    break;
+                }
             }
-         
+
 
             IsEditorVisible = true;
             this.RaisePropertyChanged(nameof(EditViewModel));
             this.RaisePropertyChanged(nameof(IsEditorVisible));
         }
+
         return Unit.Default;
     }
+
     #endregion
 
     #region DataGridCollections
@@ -342,8 +349,7 @@ public class ControlWindowViewModel : ViewModelBase
 
     #endregion
 
-    
-    
+
     public ControlWindowViewModel()
     {
         ButtonSearchVisibility = true;
@@ -355,6 +361,6 @@ public class ControlWindowViewModel : ViewModelBase
         SearchCommand = ReactiveCommand.CreateFromTask(Search);
         SearchByDateCommand = ReactiveCommand.CreateFromTask(SearchByDate);
         SaveCommand = ReactiveCommand.CreateFromTask(Save);
-        OpenEditCommand= ReactiveCommand.CreateFromTask(OpenEditor);
+        OpenEditCommand = ReactiveCommand.CreateFromTask(OpenEditor);
     }
 }
