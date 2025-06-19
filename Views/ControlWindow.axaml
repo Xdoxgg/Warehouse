@@ -8,8 +8,7 @@
         x:Class="Warehouse.Views.ControlWindow"
         xmlns:uc="using:Warehouse.Views"
         Title="ControlWindow"
-        WindowState="Maximized"
-        CanResize="False">
+        WindowState="Maximized">
     <Grid ColumnDefinitions="0.3*,*,0.6*" RowDefinitions="0.3*,*,0.3*">
         <StackPanel Grid.Column="1" Orientation="Vertical">
             <Label Content="Фильтрация" HorizontalAlignment="Center" />
@@ -43,6 +42,7 @@
             <ComboBoxItem Content="Товары"></ComboBoxItem>
             <ComboBoxItem Content="Записи"></ComboBoxItem>
             <ComboBoxItem Content="Группы товаров"></ComboBoxItem>
+            <ComboBoxItem Content="Производители"></ComboBoxItem>
         </ComboBox>
         <StackPanel Grid.Column="1" Grid.Row="2">
             <StackPanel Orientation="Horizontal">
@@ -81,6 +81,9 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:EditItemTypeViewModel}">
                     <uc:EditItemType />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:EditCreatorViewModel}">
+                    <uc:EditCreatorUC />
                 </DataTemplate>
             </ContentControl.DataTemplates>
         </ContentControl>

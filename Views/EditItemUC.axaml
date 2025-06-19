@@ -17,6 +17,7 @@
                 <Label Content="Годен до" Margin="10" Height="30"/>
                 <Label Content="Прибыл" Margin="10" Height="30"/>
                 <Label Content="Тип" Margin="10" Height="30"/>
+                <Label Content="Производитель" Margin="10" Height="30"/>
                 <Label Content="Отправлен" Margin="10" Height="30"/>
                 <Label Content="Вернули" Margin="10" Height="30"/>
                 <Label Content="Срок годности" Margin="10" Height="30"/>
@@ -31,7 +32,9 @@
                           Height="30" Margin="10 10 0 0" />
                 <ComboBox ItemsSource="{Binding ItemTypes}" SelectedItem="{Binding SelectedType}" Width="150"
                           Height="30" Margin="10 10 0 0" />
-                <CheckBox Margin="10" IsChecked="{Binding EditItem.IsSend}" />
+                <ComboBox ItemsSource="{Binding Creators}" SelectedItem="{Binding EditItem.Creator}" Width="150"
+                          Height="30" Margin="10 10 0 0" />
+                <CheckBox Margin="10 25 0 0" IsChecked="{Binding EditItem.IsSend}" />
                 <CheckBox Margin="10" IsChecked="{Binding EditItem.IsReverted}" />
                 <CheckBox Margin="10" IsChecked="{Binding WithToDate}" />
                 <Button Content="Закрыть" Command="{Binding CancelCommand}" Margin="10" Height="30"/>

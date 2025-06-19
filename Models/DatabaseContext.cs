@@ -9,6 +9,7 @@ internal class DatabaseContext:DbContext
     public DbSet<ItemType> ItemTypes { get; set; }
     public DbSet<Record> Records { get; set; }
     public DbSet<Item> Items { get; set; }
+    public DbSet<Creator>  Creators { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

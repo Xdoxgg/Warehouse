@@ -180,8 +180,22 @@ public class ControlWindowViewModel : ViewModelBase
                     Id = (DataGridItems.Last() != null) ? (DataGridItems.Last() as ItemType).Id + 1 : 1,
                     Description = "",
                     Name = "",
-            
                 });
+                break;
+            case 3:
+                try
+                {
+                    DataGridItems.Add(new Creator()
+                    {
+                        Id = (DataGridItems.Last() != null) ? (DataGridItems.Last() as Creator).Id + 1 : 1,
+                        Name = "",
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
                 break;
             default:
                 return Unit.Default;
@@ -217,6 +231,13 @@ public class ControlWindowViewModel : ViewModelBase
                 newDataGridItems = new ObservableCollection<object>(DatabaseInterface.ItemTypes);
                 SearchLabelText = "Введите название";
                 break;
+            case 3:
+            {
+                ButtonSearchVisibility = false;
+                newDataGridItems = new ObservableCollection<object>(DatabaseInterface.Creators);
+                SearchLabelText = "Введите название";
+                break;
+            }
             default:
                 return Unit.Default;
         }
@@ -233,7 +254,7 @@ public class ControlWindowViewModel : ViewModelBase
             case 0:
             {
                 var result = DatabaseInterface.Items.First(x =>
-                    x.Name.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase));
+                    x.Name.ToLower().Contains(SearchText.ToLower()));
                 SelectedDataGridItem = result;
                 break;
             }
@@ -242,7 +263,15 @@ public class ControlWindowViewModel : ViewModelBase
             {
                 var result =
                     DatabaseInterface.ItemTypes.First(x =>
-                        x.Name.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase));
+                        x.Name.ToLower().Contains(SearchText.ToLower()));
+                SelectedDataGridItem = result;
+                break;
+            }
+            case 3:
+            {
+                var result =
+                    DatabaseInterface.Creators.First(x =>
+                        x.Name.ToLower().Contains(SearchText.ToLower()));
                 SelectedDataGridItem = result;
                 break;
             }
@@ -297,6 +326,11 @@ public class ControlWindowViewModel : ViewModelBase
                 case 2:
                 {
                     DatabaseInterface.SaveOrUpdateItemTypes(DataGridItems);
+                    break;
+                }
+                case 3:
+                {
+                    DatabaseInterface.SaveOrUpdateCreators(DataGridItems);
                     break;
                 }
             }
@@ -363,6 +397,12 @@ public class ControlWindowViewModel : ViewModelBase
                     EditViewModel = new EditItemTypeViewModel(SelectedDataGridItem as ItemType, EditOnClose,
                         RefreshTable);
 
+                    break;
+                }
+                case 3:
+                {
+                    EditViewModel = new EditCreatorViewModel(SelectedDataGridItem as Creator, EditOnClose,
+                        RefreshTable);
                     break;
                 }
             }

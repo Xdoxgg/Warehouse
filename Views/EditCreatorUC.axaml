@@ -1,0 +1,23 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Warehouse.ViewModels"
+             x:DataType="vm:EditCreatorViewModel"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Warehouse.Views.EditCreatorUC">
+    <Border BorderBrush="Black" BorderThickness="2" Padding="10" Margin="10" Width="450">
+        <StackPanel Orientation="Horizontal">
+
+            <StackPanel>
+                <Label Content="Название" Margin="10" Height="30" />
+                <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="5" Height="30" />
+            </StackPanel>
+            <StackPanel>
+                <TextBox Text="{Binding Type.Name}"/>
+                <Button Content="Закрыть" Command="{Binding CancelCommand}" Margin="10" Height="30" />
+
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</UserControl>

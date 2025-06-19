@@ -1,4 +1,5 @@
 ﻿DROP TABLE IF EXISTS tbl_item;
+DROP TABLE IF EXISTS tbl_creator;
 DROP TABLE IF EXISTS tbl_record;
 DROP TABLE IF EXISTS tbl_item_type;
 DROP TABLE IF EXISTS tbl_users;
@@ -26,9 +27,15 @@ CREATE TABLE tbl_item_type
 CREATE TABLE tbl_record
 (
     PK_record_id  INT PRIMARY KEY IDENTITY (1,1),
-    date_entrance DATE NOT NULL
+    date_entrance DATE NOT NULL UNIQUE
 );
 
+
+CREATE TABLE tbl_creator
+(
+    PK_creator_id INT PRIMARY KEY IDENTITY (1,1),
+    name          NVARCHAR(255) NOT NULL UNIQUE,
+);
 
 CREATE TABLE tbl_item
 (
@@ -40,5 +47,6 @@ CREATE TABLE tbl_item
     FK_type_id   INT           FOREIGN KEY REFERENCES tbl_item_type (PK_type_id) ON DELETE SET NULL,
     FK_record_id INT           FOREIGN KEY REFERENCES tbl_record (PK_record_id) ON DELETE SET NULL,
     is_send      BIT           NOT NULL,
-    is_reverted  BIT           NOT NULL
+    is_reverted  BIT           NOT NULL,
+    FK_creator_id INT           FOREIGN KEY REFERENCES tbl_creator (PK_creator_id) ON DELETE SET NULL,
 );

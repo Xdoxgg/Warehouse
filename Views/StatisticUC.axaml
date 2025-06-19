@@ -17,7 +17,8 @@
                       CanUserSortColumns="True"
                       CanUserResizeColumns="True"
                       IsReadOnly="True"
-                      GridLinesVisibility="All">
+                      GridLinesVisibility="All"
+                      BorderThickness="1" BorderBrush="Gray">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="*" />
                     <DataGridTextColumn Header="Количество " Binding="{Binding Count}" Width="*" />
@@ -30,7 +31,8 @@
                       CanUserSortColumns="True"
                       CanUserResizeColumns="True"
                       IsReadOnly="True"
-                      GridLinesVisibility="All">
+                      GridLinesVisibility="All"
+                      BorderThickness="1" BorderBrush="Gray">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="*" />
                     <DataGridTextColumn Header="Количество " Binding="{Binding Count}" Width="*" />

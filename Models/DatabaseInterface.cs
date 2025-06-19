@@ -76,6 +76,7 @@ public static class DatabaseInterface
                 existingItem.ItemTypeId = item.ItemTypeId;
                 existingItem.IsSend = item.IsSend;
                 existingItem.IsReverted = item.IsReverted;
+                existingItem.CreatorId = item.CreatorId;
                 if (existingItem.ItemType?.Id != item.ItemType?.Id)
                 {
                     existingItem.ItemType = _context.ItemTypes.Find(item.ItemType.Id);
@@ -84,6 +85,10 @@ public static class DatabaseInterface
                 if (existingItem.Record?.Id != item.Record?.Id)
                 {
                     existingItem.Record = _context.Records.Find(item.Record.Id);
+                }
+                if (existingItem.Creator?.Id != item.Creator?.Id)
+                {
+                    existingItem.Creator = _context.Creators.Find(item.Creator.Id);
                 }
             }
             else
@@ -97,7 +102,9 @@ public static class DatabaseInterface
                     RecordId = item.RecordId,
                     ItemTypeId = item.ItemTypeId,
                     ItemType = _context.ItemTypes.Find(item.ItemType.Id),
-                    Record = _context.Records.Find(item.Record.Id)
+                    Record = _context.Records.Find(item.Record.Id),
+                    CreatorId = item.Creator.Id,
+                    Creator = _context.Creators.Find(item.Creator.Id)
                 };
                 _context.Items.Add(addedItem);
             }
@@ -164,21 +171,45 @@ public static class DatabaseInterface
         _context.SaveChanges();
     }
 
+    public static void SaveOrUpdateCreators(ObservableCollection<object> items)
+    {
+        if (!_dbExists)
+        {
+            Initialize();
+        }
+
+        foreach (var item in items.OfType<Creator>())
+        {
+            var existingItem = _context.Creators.FirstOrDefault(i => i.Id == item.Id);
+
+            if (existingItem != null)
+            {
+                existingItem.Name = item.Name;
+            }
+            else
+            {
+                Creator addedItem = new Creator()
+                {
+                    Name = item.Name
+                };
+                _context.Creators.Add(addedItem);
+            }
+        }
+
+        _context.SaveChanges();
+    }
+    
     #endregion
 
 
     public static List<Item> Items
     {
-        get { return _context.Items.Include(i => i.ItemType).Include(i => i.Record).ToList(); }
+        get { return _context.Items.Include(i => i.ItemType).Include(i => i.Record).Include(c=>c.Creator).ToList(); }
     }
 
-    public static DbSet<Record> Records
-    {
-        get { return _context.Records; }
-    }
+    public static DbSet<Record> Records => _context.Records;
 
-    public static DbSet<ItemType> ItemTypes
-    {
-        get { return _context.ItemTypes; }
-    }
+    public static DbSet<ItemType> ItemTypes => _context.ItemTypes;
+
+    public static DbSet<Creator> Creators => _context.Creators;
 }

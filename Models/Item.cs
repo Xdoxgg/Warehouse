@@ -16,6 +16,8 @@ public class Item
     private ItemType? _item_type;
     private int? _recordId;
     private Record? _record;
+    private int? _creator_id;
+    private Creator? _creator;
 
     [Column("PK_item_id")]
     [Display(Name = "ID")]
@@ -25,7 +27,7 @@ public class Item
         set => _id = value;
     }
 
-    
+
     [Column("name")]
     [Display(Name = "Название")]
     public string Name
@@ -33,7 +35,7 @@ public class Item
         get => _name;
         set => _name = value;
     }
-    
+
     [Column("cost")]
     [Display(Name = "Стоимость")]
 
@@ -68,8 +70,8 @@ public class Item
         get => _itemType_id;
         set => _itemType_id = value;
     }
-    [Display(Name = "Тип")]
 
+    [Display(Name = "Тип")]
     public ItemType ItemType
     {
         get => _item_type;
@@ -83,16 +85,22 @@ public class Item
         get => _recordId;
         set => _recordId = value;
     }
-    [Display(Name = "Прибыл")]
 
+    [Display(Name = "Прибыл")]
     public Record? Record
     {
         get => _record;
         set => _record = value;
     }
+    [Display(Name = "Производитель")]
+    public Creator? Creator
+    {
+        get => _creator;
+        set => _creator = value;
+    }
 
     private bool _isSend;
-    
+
     [Display(Name = "Отправлен")]
     [Column("is_send")]
     public bool IsSend
@@ -100,9 +108,9 @@ public class Item
         get => _isSend;
         set => _isSend = value;
     }
-    
+
     private bool _isReverted;
- 
+
     [Display(Name = "Вернули")]
     [Column("is_reverted")]
     public bool IsReverted
@@ -111,5 +119,13 @@ public class Item
         set => _isReverted = value;
     }
 
+    [ForeignKey("Creator")]
+    [Column("FK_creator_id")]
+    internal int? CreatorId
+    {
+        get => _creator_id;
+        set => _creator_id = value;
+    }
 
+  
 }

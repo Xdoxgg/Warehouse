@@ -21,7 +21,14 @@ public class EditItemViewModel : ViewModelBase
     private Record _selectedRecord;
     private DateTimeOffset _viewTime;
     private bool _withToDate;
+    private ObservableCollection<Creator> _creators;
 
+    public ObservableCollection<Creator> Creators
+    {
+        get => _creators;
+        set => this.RaiseAndSetIfChanged(ref _creators, value);
+    }
+    
     public bool WithToDate
     {
         get => _withToDate;
@@ -83,7 +90,7 @@ public class EditItemViewModel : ViewModelBase
         {
             _original.ToDate = null;
         }
-
+        _original.Creator = EditItem.Creator;
         _original.ItemType = SelectedType;
         _original.Record = SelectedRecord;
         _original.IsReverted = EditItem.IsReverted;
@@ -100,6 +107,7 @@ public class EditItemViewModel : ViewModelBase
         _original = item;
         ItemTypes = new ObservableCollection<ItemType>(DatabaseInterface.ItemTypes);
         Records = new ObservableCollection<Record>(DatabaseInterface.Records);
+        Creators = new ObservableCollection<Creator>(DatabaseInterface.Creators);
         EditItem = item;
         EditItem.IsReverted = item.IsReverted;
         EditItem.IsSend = item.IsSend;
