@@ -14,6 +14,8 @@ public class ControlWindowViewModel : ViewModelBase
 {
     #region Properties
 
+    private RefresherDelegate _refresher;
+
     private ViewModelBase _editViewModel;
 
     public ViewModelBase EditViewModel
@@ -22,17 +24,6 @@ public class ControlWindowViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _editViewModel, value);
     }
 
-    private bool _isEditorVisible;
-
-    public bool IsEditorVisible
-    {
-        get => _isEditorVisible;
-        set
-        {
-            _isEditorVisible = value;
-            this.RaisePropertyChanged(nameof(IsEditorVisible));
-        }
-    }
 
     #region Error
 
@@ -177,8 +168,20 @@ public class ControlWindowViewModel : ViewModelBase
                 });
                 break;
             case 1:
+                DataGridItems.Add(new Record()
+                {
+                    Id = (DataGridItems.Last() != null) ? (DataGridItems.Last() as Record).Id + 1 : 1,
+                    DateEntrance = new DateOnly(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day)
+                });
                 break;
             case 2:
+                DataGridItems.Add(new ItemType()
+                {
+                    Id = (DataGridItems.Last() != null) ? (DataGridItems.Last() as ItemType).Id + 1 : 1,
+                    Description = "",
+                    Name = "",
+            
+                });
                 break;
             default:
                 return Unit.Default;
@@ -193,6 +196,10 @@ public class ControlWindowViewModel : ViewModelBase
     {
         ObservableCollection<object> newDataGridItems;
         await EditOnClose();
+        var vm = new StatisticViewModel();
+        EditViewModel = vm;
+        _refresher = vm.RefreshStatistic;
+        this.RaisePropertyChanged(nameof(DataGridItems));
         switch (SelectedIndex)
         {
             case 0:
@@ -214,6 +221,7 @@ public class ControlWindowViewModel : ViewModelBase
                 return Unit.Default;
         }
 
+        _refresher();
         DataGridItems = newDataGridItems;
         return Unit.Default;
     }
@@ -298,14 +306,16 @@ public class ControlWindowViewModel : ViewModelBase
             Console.WriteLine(ex.Message);
         }
 
+        await LoadData();
         return Unit.Default;
     }
 
     private async Task<Unit> EditOnClose()
     {
-        IsEditorVisible = false;
-        this.RaisePropertyChanged(nameof(IsEditorVisible));
         this.RaisePropertyChanged(nameof(DataGridItems));
+        var vm = new StatisticViewModel();
+        EditViewModel = vm;
+        _refresher = vm.RefreshStatistic;
         return Unit.Default;
     }
 
@@ -331,7 +341,16 @@ public class ControlWindowViewModel : ViewModelBase
             {
                 case 0:
                 {
-                    EditViewModel = new EditItemViewModel(SelectedDataGridItem as Item, EditOnClose, RefreshTable);
+                    try
+                    {
+                        var t = SelectedDataGridItem as Item;
+                        EditViewModel = new EditItemViewModel(SelectedDataGridItem as Item, EditOnClose, RefreshTable);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+
                     break;
                 }
                 case 1:
@@ -348,9 +367,7 @@ public class ControlWindowViewModel : ViewModelBase
                 }
             }
 
-            IsEditorVisible = true;
             this.RaisePropertyChanged(nameof(EditViewModel));
-            this.RaisePropertyChanged(nameof(IsEditorVisible));
         }
 
         return Unit.Default;
@@ -381,7 +398,6 @@ public class ControlWindowViewModel : ViewModelBase
         SelectedIndex = 0;
         SearchText = "";
         SearchLabelText = "";
-        IsEditorVisible = false;
         LoadDataCommand = ReactiveCommand.CreateFromTask(LoadData);
         SearchCommand = ReactiveCommand.CreateFromTask(Search);
         SearchByDateCommand = ReactiveCommand.CreateFromTask(SearchByDate);

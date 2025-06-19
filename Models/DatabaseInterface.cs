@@ -74,6 +74,8 @@ public static class DatabaseInterface
                 existingItem.ToDate = item.ToDate;
                 existingItem.RecordId = item.RecordId;
                 existingItem.ItemTypeId = item.ItemTypeId;
+                existingItem.IsSend = item.IsSend;
+                existingItem.IsReverted = item.IsReverted;
                 if (existingItem.ItemType?.Id != item.ItemType?.Id)
                 {
                     existingItem.ItemType = _context.ItemTypes.Find(item.ItemType.Id);

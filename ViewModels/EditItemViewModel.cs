@@ -20,6 +20,13 @@ public class EditItemViewModel : ViewModelBase
     private ItemType _selectedType;
     private Record _selectedRecord;
     private DateTimeOffset _viewTime;
+    private bool _withToDate;
+
+    public bool WithToDate
+    {
+        get => _withToDate;
+        set => this.RaiseAndSetIfChanged(ref _withToDate, value);
+    }
 
     public DateTimeOffset ViewTime
     {
@@ -68,9 +75,19 @@ public class EditItemViewModel : ViewModelBase
         _original.Description = EditItem.Description;
         _original.Price = EditItem.Price;
         _original.Name = EditItem.Name;
-        _original.ToDate = new DateOnly(ViewTime.Date.Year, ViewTime.Date.Month, ViewTime.Date.Day);
+        if (WithToDate)
+        {
+            _original.ToDate = new DateOnly(ViewTime.Date.Year, ViewTime.Date.Month, ViewTime.Date.Day);
+        }
+        else
+        {
+            _original.ToDate = null;
+        }
+
         _original.ItemType = SelectedType;
         _original.Record = SelectedRecord;
+        _original.IsReverted = EditItem.IsReverted;
+        _original.IsSend = EditItem.IsSend;
         await _updater();
         return Unit.Default;
     }
@@ -84,7 +101,11 @@ public class EditItemViewModel : ViewModelBase
         ItemTypes = new ObservableCollection<ItemType>(DatabaseInterface.ItemTypes);
         Records = new ObservableCollection<Record>(DatabaseInterface.Records);
         EditItem = item;
+        EditItem.IsReverted = item.IsReverted;
+        EditItem.IsSend = item.IsSend;
         SaveCommand = ReactiveCommand.CreateFromTask(Save);
+        CancelCommand = ReactiveCommand.CreateFromTask(onClose);
+
         if (item.ItemType != null)
         {
             SelectedType = ItemTypes.First(el => el.Id == item.ItemType.Id);
@@ -95,13 +116,16 @@ public class EditItemViewModel : ViewModelBase
             SelectedRecord = Records.First(el => el.Id == item.Record.Id);
         }
 
-        CancelCommand = ReactiveCommand.CreateFromTask(onClose);
-        SaveCommand.ThrownExceptions
-            .Subscribe(ex => { Console.WriteLine($"Ошибка в SaveCommand: {ex.Message}"); });
-        if (item.ToDate != null)
+        try
         {
             ViewTime = new DateTimeOffset(new DateTime(item.ToDate.Value.Year, item.ToDate.Value.Month,
                 item.ToDate.Value.Day));
+            WithToDate = true;
+        }
+        catch (Exception ex)
+        {
+            ViewTime = new DateTimeOffset(new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day));
+            WithToDate = false;
         }
 
         ClearDateCommand = ReactiveCommand.CreateFromTask(async () => { ViewTime = new DateTimeOffset(); });

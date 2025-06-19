@@ -1,0 +1,41 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Warehouse.ViewModels"
+             x:DataType="vm:StatisticViewModel"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Warehouse.Views.StatisticUC">
+    <Border BorderBrush="Black" BorderThickness="2" Padding="10" Margin="10" Width="450">
+        <Grid RowDefinitions="*,*,*,*" ColumnDefinitions="*,*">
+            <Label Content="Всего на складе: " Grid.Column="0" Grid.Row="0" />
+            <Label Content="{Binding ItemsCount}" Grid.Column="1" Grid.Row="0" />
+            <Label Content="Топ продаж: " Grid.Column="0" Grid.Row="1" />
+            <DataGrid AutoGenerateColumns="False"
+                      Grid.Column="1" Grid.Row="1"
+                      ItemsSource="{Binding ItemCounts}"
+                      CanUserSortColumns="True"
+                      CanUserResizeColumns="True"
+                      IsReadOnly="True"
+                      GridLinesVisibility="All">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="*" />
+                    <DataGridTextColumn Header="Количество " Binding="{Binding Count}" Width="*" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <Label Content="Нехватка: " Grid.Column="0" Grid.Row="2" />
+            <DataGrid AutoGenerateColumns="False"
+                      Grid.Column="1" Grid.Row="2"
+                      ItemsSource="{Binding LowCountItems}"
+                      CanUserSortColumns="True"
+                      CanUserResizeColumns="True"
+                      IsReadOnly="True"
+                      GridLinesVisibility="All">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="*" />
+                    <DataGridTextColumn Header="Количество " Binding="{Binding Count}" Width="*" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Border>
+</UserControl>
