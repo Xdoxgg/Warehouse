@@ -1,0 +1,34 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Warehouse.ViewModels"
+             x:DataType="vm:Q2VM"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Warehouse.Views.QueryUC2">
+    <Grid RowDefinitions="*,*,0.3*,0.3*" ColumnDefinitions="*,*" HorizontalAlignment="Center"
+          VerticalAlignment="Center">
+        <Label Height="30" Margin="10" Content="От" />
+        <Label Grid.Row="1" Height="30" Margin="10" Content="До" />
+        <DatePicker Grid.Column="1" DayFormat="ddd dd" Height="30" Margin="10" Width="60"
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    SelectedDate="{Binding FromDate}" />
+        <DatePicker Grid.Column="1" Grid.Row="1" DayFormat="ddd dd" Height="30" Margin="10" Width="60"
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    SelectedDate="{Binding ToDate}" />
+        <Button Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Command="{Binding CreateCommand}" Content="Отчёт" />
+        <Label Grid.Row="3" Grid.ColumnSpan="2" Content="{Binding ErrorText, Mode=TwoWay}" Background="Red"
+               Foreground="White"
+               Opacity="{Binding ErrorOpacity}">
+
+            <Label.Transitions>
+                <Transitions>
+                    <DoubleTransition Duration="0:0:0.3" Easing="SineEaseIn" Property="Opacity"></DoubleTransition>
+                </Transitions>
+
+            </Label.Transitions>
+        </Label>
+    </Grid>
+</UserControl>

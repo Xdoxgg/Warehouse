@@ -9,7 +9,19 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <AvaloniaResource Include="Assets\**"/>
+        <AvaloniaResource Include="Assets\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <COMReference Include="Microsoft.Office.Interop.Word">
+        <WrapperTool>tlbimp</WrapperTool>
+        <VersionMinor>7</VersionMinor>
+        <VersionMajor>8</VersionMajor>
+        <Guid>00020905-0000-0000-c000-000000000046</Guid>
+        <Lcid>0</Lcid>
+        <Isolated>false</Isolated>
+        <EmbedInteropTypes>true</EmbedInteropTypes>
+      </COMReference>
     </ItemGroup>
 
     <ItemGroup>
@@ -17,11 +29,11 @@
         <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.3.0" />
         <PackageReference Include="Avalonia.Desktop" Version="11.3.0" />
         <PackageReference Include="Avalonia.ReactiveUI" Version="11.3.0" />
-        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.1.0"/>
-        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.1.0"/>
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.1.0" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.1.0" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.3.0" />
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1"/>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.5" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.5" />
         <PackageReference Include="ReactiveUI" Version="20.2.45" />

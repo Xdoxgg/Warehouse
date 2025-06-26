@@ -1,0 +1,36 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Warehouse.ViewModels"
+             xmlns:uc="clr-namespace:Warehouse.Views"
+             x:DataType="vm:QueryWM"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Warehouse.Views.QueryUC">
+    <StackPanel HorizontalAlignment="Center">
+        <StackPanel Orientation="Horizontal" Margin="10">
+            <Label Content="Отчёты" Margin="10" />
+
+            <ComboBox Width="102" SelectedIndex="{Binding SelectedIndex}"
+                      SelectionChanged="SelectingItemsControl_OnSelectionChanged">
+                <ComboBoxItem>Предметы на складе</ComboBoxItem>
+                <ComboBoxItem>Отправленные в период времени</ComboBoxItem>
+                <ComboBoxItem>По компании</ComboBoxItem>
+            </ComboBox>
+
+        </StackPanel>
+        <ContentControl Content="{Binding SelectedItem}">
+            <ContentControl.DataTemplates>
+                <DataTemplate DataType="{x:Type vm:Q1VM}">
+                    <uc:QueryUC1 />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:Q2VM}">
+                    <uc:QueryUC2 />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:Q3VM}">
+                    <uc:QueryUC3 />
+                </DataTemplate>
+            </ContentControl.DataTemplates>
+        </ContentControl>
+    </StackPanel>
+</UserControl>

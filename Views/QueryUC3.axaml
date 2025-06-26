@@ -1,0 +1,25 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Warehouse.ViewModels"
+             x:DataType="vm:Q3VM"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Warehouse.Views.QueryUC3">
+    <Grid RowDefinitions="*,*,0.3*" HorizontalAlignment="Center" VerticalAlignment="Center">
+        
+        <ComboBox ItemsSource="{Binding Creators}" SelectedItem="{Binding SelectedCreator}" Margin="10" Width="150"/>
+        <Button Content="Сгенерировать" Grid.Row="1" Margin="10" Command="{Binding CreateCommand}"/>
+        <Label Grid.Row="2" Content="{Binding ErrorText, Mode=TwoWay}" Background="Red" Margin="10"
+               Foreground="White"
+               Opacity="{Binding ErrorOpacity}">
+
+            <Label.Transitions>
+                <Transitions>
+                    <DoubleTransition Duration="0:0:0.3" Easing="SineEaseIn" Property="Opacity"></DoubleTransition>
+                </Transitions>
+
+            </Label.Transitions>
+        </Label>
+    </Grid>
+</UserControl>

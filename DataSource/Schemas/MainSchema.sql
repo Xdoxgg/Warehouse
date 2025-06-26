@@ -39,14 +39,14 @@ CREATE TABLE tbl_creator
 
 CREATE TABLE tbl_item
 (
-    PK_item_id   INT PRIMARY KEY IDENTITY (1,1),
-    name         NVARCHAR(255) NOT NULL,
-    cost         FLOAT         NOT NULL,
-    description  NVARCHAR(255) NOT NULL,
-    to_date      DATE,
-    FK_type_id   INT           FOREIGN KEY REFERENCES tbl_item_type (PK_type_id) ON DELETE SET NULL,
-    FK_record_id INT           FOREIGN KEY REFERENCES tbl_record (PK_record_id) ON DELETE SET NULL,
-    is_send      BIT           NOT NULL,
-    is_reverted  BIT           NOT NULL,
+    PK_item_id    INT PRIMARY KEY IDENTITY (1,1),
+    name          NVARCHAR(255) NOT NULL,
+    cost          FLOAT         NOT NULL,
+    description   NVARCHAR(255) NOT NULL,
+    to_date       DATE,
+    FK_type_id    INT           FOREIGN KEY REFERENCES tbl_item_type (PK_type_id) ON DELETE SET NULL,
+    FK_record_id  INT           FOREIGN KEY REFERENCES tbl_record (PK_record_id) ON DELETE SET NULL,
+    is_send       BIT           NOT NULL,
+    is_reverted   BIT           NOT NULL,
     FK_creator_id INT           FOREIGN KEY REFERENCES tbl_creator (PK_creator_id) ON DELETE SET NULL,
 );

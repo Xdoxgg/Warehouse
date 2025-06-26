@@ -86,7 +86,7 @@
                     <uc:EditCreatorUC />
                 </DataTemplate>
             </ContentControl.DataTemplates>
-        </ContentControl>
-
+        </ContentControl>      
+      <uc:QueryUC Grid.Row="1" Grid.RowSpan="2"></uc:QueryUC>
     </Grid>
 </Window>
