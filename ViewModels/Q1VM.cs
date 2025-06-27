@@ -46,7 +46,10 @@ public class Q1VM:ViewModelBase
     {
         try
         {
-            ReportGenerator.GenerateDefaultReport(DatabaseInterface.Items.Where(el=>!el.IsSend).ToList());
+            Task.Run(() =>
+            {
+                ReportGenerator.GenerateDefaultReport(DatabaseInterface.Items.Where(el=>!el.IsSend).ToList());
+            });
         }
         catch (Exception ex)
         {

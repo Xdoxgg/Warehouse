@@ -87,6 +87,7 @@
                 </DataTemplate>
             </ContentControl.DataTemplates>
         </ContentControl>      
-      <uc:QueryUC Grid.Row="1" Grid.RowSpan="2"></uc:QueryUC>
+      <uc:QueryUC Grid.Column="0" Grid.Row="1" Grid.RowSpan="2"/>
+        <Button Grid.Row="2" Grid.Column="2" Content="Добавить пользователя" IsVisible="{Binding Type}" Command="{Binding AddUserCommand}"/>
     </Grid>
 </Window>

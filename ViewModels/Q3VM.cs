@@ -48,7 +48,7 @@ public class Q3VM : ViewModelBase
         get => _creatrs;
         set => _creatrs = value;
     }
-    
+
     private ReactiveCommand<Unit, Unit> _createCommand;
 
     public ReactiveCommand<Unit, Unit> CreateCommand
@@ -65,10 +65,13 @@ public class Q3VM : ViewModelBase
             ErrorOpacity = 0.5;
             Task.Run(HideError);
             return Unit.Default;
-
         }
-        var res = DatabaseInterface.Items.Where(el=>el.CreatorId == SelectedCreator.Id).ToList();
-        ReportGenerator.GenerateDefaultReport(res);
+
+        var res = DatabaseInterface.Items.Where(el => el.CreatorId == SelectedCreator.Id).ToList();
+        Task.Run(() =>
+        {
+            ReportGenerator.GenerateDefaultReport(res);
+        });
         return Unit.Default;
     }
 

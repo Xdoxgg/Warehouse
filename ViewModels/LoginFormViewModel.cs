@@ -78,7 +78,8 @@ public class LoginFormViewModel : ViewModelBase
             var existed = DatabaseInterface.ExistUser(Name, Password);
             if (existed)
             {
-                new ControlWindow().Show();
+                
+                new ControlWindow(DatabaseInterface.UserType(Name,Password)).Show();
                 var window = (App.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow;
                 if (window != null)
                 {

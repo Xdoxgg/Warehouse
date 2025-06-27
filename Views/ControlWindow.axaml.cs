@@ -7,10 +7,11 @@ namespace Warehouse.Views;
 
 public partial class ControlWindow : Window
 {
-    public ControlWindow()
+    public ControlWindow(bool type)
     {
         InitializeComponent();
         DataContext = new ControlWindowViewModel();
+        (DataContext as ControlWindowViewModel).Type = type;
         ComboBoxMenu.SelectedIndex = 0;
     }
 

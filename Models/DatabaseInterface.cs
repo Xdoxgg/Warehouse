@@ -53,6 +53,14 @@ public static class DatabaseInterface
         return _context.Users.Any(el => el.Name == username && el.Password == EncryptionProcess.Encrypt(password));
     }
 
+    public static bool UserType(string username, string password)
+    {
+        if (!_dbExists)
+        {
+            Initialize();
+        }
+        return _context.Users.First(el => el.Name == username && el.Password == EncryptionProcess.Encrypt(password)).Type;
+    }
 
     public static void SaveOrUpdateItems(ObservableCollection<object> items)
     {

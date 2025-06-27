@@ -9,10 +9,11 @@ using Warehouse.Models;
 
 namespace Warehouse.ViewModels;
 
-public class Q2VM:ViewModelBase
+public class Q2VM : ViewModelBase
 {
     private double _errorOpacity;
     private string _errorText;
+
     public async Task<Unit> HideError()
     {
         Thread.Sleep(3000);
@@ -32,13 +33,17 @@ public class Q2VM:ViewModelBase
         get => _errorText;
         set => this.RaiseAndSetIfChanged(ref _errorText, value);
     }
+
     private DateTimeOffset _toDate;
+
     public DateTimeOffset ToDate
     {
         get => _toDate;
         set => this.RaiseAndSetIfChanged(ref _toDate, value);
     }
+
     private DateTimeOffset _fromDate;
+
     public DateTimeOffset FromDate
     {
         get => _fromDate;
@@ -49,7 +54,7 @@ public class Q2VM:ViewModelBase
 
     public ReactiveCommand<Unit, Unit> CreateCommand
     {
-        get=> _createCommand;
+        get => _createCommand;
         set => this.RaiseAndSetIfChanged(ref _createCommand, value);
     }
 
@@ -61,22 +66,26 @@ public class Q2VM:ViewModelBase
             var toDate = new DateOnly(ToDate.Date.Year, ToDate.Date.Month, ToDate.Date.Day);
             List<Item> list = DatabaseInterface.Items.Where(el =>
                 el.IsSend && (el.Record.DateEntrance > fromDate && el.Record.DateEntrance < toDate)).ToList();
-            ReportGenerator.GenerateDefaultReport(list);
+            Task.Run(() =>
+            {
+                ReportGenerator.GenerateDefaultReport(list); 
+                
+            });
         }
         catch (Exception ex)
         {
             ErrorText = ex.Message;
             ErrorOpacity = 0.5;
             Task.Run(HideError);
-
         }
 
         return Unit.Default;
     }
+
     public Q2VM()
     {
         ErrorOpacity = 0;
         ErrorText = "";
-        CreateCommand =ReactiveCommand.CreateFromTask(Create);
+        CreateCommand = ReactiveCommand.CreateFromTask(Create);
     }
 }

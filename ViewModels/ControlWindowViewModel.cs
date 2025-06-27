@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ReactiveUI;
 using Warehouse.Models;
+using Warehouse.Views;
 
 namespace Warehouse.ViewModels;
 
@@ -14,6 +15,14 @@ public class ControlWindowViewModel : ViewModelBase
 {
     #region Properties
 
+    private bool _type;
+
+    public bool Type
+    {
+        get=> _type;
+        set=> this.RaiseAndSetIfChanged(ref _type,value);
+    }
+    
     private RefresherDelegate _refresher;
 
     private ViewModelBase _editViewModel;
@@ -98,6 +107,14 @@ public class ControlWindowViewModel : ViewModelBase
     #endregion
 
     #region Commands
+
+    private ReactiveCommand<Unit, Unit> _addUserCommand;
+
+    public ReactiveCommand<Unit, Unit> AddUserCommand
+    {
+        get => _addUserCommand;
+        set => _addUserCommand = value;
+    }
 
     private ReactiveCommand<Unit, Unit> _openEditCommand;
 
@@ -413,6 +430,13 @@ public class ControlWindowViewModel : ViewModelBase
         return Unit.Default;
     }
 
+    private async Task<Unit> LoadAddUserWndow()
+    {
+        new AddUserWindow().Show();
+        return Unit.Default;
+    }
+    
+    
     #endregion
 
     #region DataGridCollections
@@ -444,5 +468,6 @@ public class ControlWindowViewModel : ViewModelBase
         SaveCommand = ReactiveCommand.CreateFromTask(Save);
         OpenEditCommand = ReactiveCommand.CreateFromTask(OpenEditor);
         AddRowCommand = ReactiveCommand.CreateFromTask(AddRow);
+        AddUserCommand=ReactiveCommand.CreateFromTask(LoadAddUserWndow);
     }
 }
