@@ -50,7 +50,7 @@
                 <Button HorizontalContentAlignment="Center" Content="Сохранить изменения" Command="{Binding SaveCommand}"/>
                 <Button HorizontalContentAlignment="Center" Content="Добавить строку" Command="{Binding AddRowCommand}"/>
                 <Button HorizontalContentAlignment="Center" Content="Изменить" Command="{Binding OpenEditCommand}"/>
-
+                <!-- <Button HorizontalContentAlignment="Center" Content="Удалить строку" Command="{Binding DeleteCommand}"/> -->
             </StackPanel>
             <Label Content="{Binding ErrorText, Mode=TwoWay}" Background="Red" Foreground="White"
                    Opacity="{Binding ErrorOpacity}">
@@ -88,6 +88,9 @@
             </ContentControl.DataTemplates>
         </ContentControl>      
       <uc:QueryUC Grid.Column="0" Grid.Row="1" Grid.RowSpan="2"/>
-        <Button Grid.Row="2" Grid.Column="2" Content="Добавить пользователя" IsVisible="{Binding Type}" Command="{Binding AddUserCommand}"/>
+      <StackPanel  Grid.Row="2" Grid.Column="2">
+          <Button Content="Добавить пользователя" IsVisible="{Binding Type}" Command="{Binding AddUserCommand}" Margin="10"/>
+          <Button Content="Справка" Command="{Binding OpenAdboutCommand}" Margin="10"/>
+      </StackPanel>
     </Grid>
 </Window>

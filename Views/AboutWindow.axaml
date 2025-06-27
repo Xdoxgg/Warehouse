@@ -1,0 +1,19 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Warehouse.Views.AboutWindow"
+        Title="AboutWindow">
+    <StackPanel Margin="10">
+        <Label>Это приложение для администрирования складом,</Label>
+        <Label>тут вы найдёте краткое руководство по эксплуатации</Label>
+        <Border BorderBrush="Black" BorderThickness="1" Margin="0 10 0 0">
+            <StackPanel>
+                <Label>Всё взаимодействии ведётся через таблицы</Label>
+                <Label>Всё добавление - добавьте строку и измените её, после сохраните</Label>
+                <Label>Отчёты - выберите нужны и нажмите создать, после продолжайте работу в ожидании генерации</Label>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</Window>

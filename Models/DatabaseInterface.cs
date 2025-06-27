@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace Warehouse.Models;
@@ -17,6 +18,99 @@ public static class DatabaseInterface
     }
 
     #region DataProcessing
+
+    public static async Task<bool> DeleteItemAsync(Item item)
+    {
+        if (!_dbExists)
+        {
+            Initialize();
+        }
+
+        var t = Items.FirstOrDefault(x => x.Id == item.Id);
+        if (t != null)
+        {
+            Items.Remove(t);
+            try
+            {
+                await _context.SaveChangesAsync(); // Используем асинхронный метод
+            }
+            catch (Exception ex)
+            {
+                // Логирование ошибки
+                Console.WriteLine($"Ошибка при удалении: {ex.Message}");
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static bool DeleteRecord(Record item)
+    {
+        if (!_dbExists)
+        {
+            Initialize();
+        }
+
+        var t = Records.FirstOrDefault(x => x.Id == item.Id);
+        if (t != null)
+        {
+            Records.Remove(t);
+            _context.SaveChanges();
+        }
+        else
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static bool DeleteItemType(ItemType item)
+    {
+        if (!_dbExists)
+        {
+            Initialize();
+        }
+
+        var t = ItemTypes.FirstOrDefault(x => x.Id == item.Id);
+        if (t != null)
+        {
+            ItemTypes.Remove(t);
+            _context.SaveChanges();
+        }
+        else
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static bool DeleteCreators(Creator item)
+    {
+        if (!_dbExists)
+        {
+            Initialize();
+        }
+
+        var t = Creators.FirstOrDefault(x => x.Id == item.Id);
+        if (t != null)
+        {
+            Creators.Remove(t);
+            _context.SaveChanges();
+        }
+        else
+        {
+            return false;
+        }
+
+        return true;
+    }
 
     public static void AddUser(string username, string password, bool type)
     {
@@ -59,7 +153,9 @@ public static class DatabaseInterface
         {
             Initialize();
         }
-        return _context.Users.First(el => el.Name == username && el.Password == EncryptionProcess.Encrypt(password)).Type;
+
+        return _context.Users.First(el => el.Name == username && el.Password == EncryptionProcess.Encrypt(password))
+            .Type;
     }
 
     public static void SaveOrUpdateItems(ObservableCollection<object> items)
@@ -94,6 +190,7 @@ public static class DatabaseInterface
                 {
                     existingItem.Record = _context.Records.Find(item.Record.Id);
                 }
+
                 if (existingItem.Creator?.Id != item.Creator?.Id)
                 {
                     existingItem.Creator = _context.Creators.Find(item.Creator.Id);
@@ -206,13 +303,13 @@ public static class DatabaseInterface
 
         _context.SaveChanges();
     }
-    
+
     #endregion
 
 
     public static List<Item> Items
     {
-        get { return _context.Items.Include(i => i.ItemType).Include(i => i.Record).Include(c=>c.Creator).ToList(); }
+        get { return _context.Items.Include(i => i.ItemType).Include(i => i.Record).Include(c => c.Creator).ToList(); }
     }
 
     public static DbSet<Record> Records => _context.Records;

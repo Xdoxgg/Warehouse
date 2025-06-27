@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reactive;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Controls;
 using ReactiveUI;
 using Warehouse.Models;
 using Warehouse.Views;
@@ -15,14 +16,22 @@ public class ControlWindowViewModel : ViewModelBase
 {
     #region Properties
 
+    // private DataGrid _dataGrid;
+    //
+    // public DataGrid CurrentDataGrid
+    // {
+    //     get => _dataGrid;
+    //     set => this.RaiseAndSetIfChanged(ref _dataGrid, value);
+    // }
+
     private bool _type;
 
     public bool Type
     {
-        get=> _type;
-        set=> this.RaiseAndSetIfChanged(ref _type,value);
+        get => _type;
+        set => this.RaiseAndSetIfChanged(ref _type, value);
     }
-    
+
     private RefresherDelegate _refresher;
 
     private ViewModelBase _editViewModel;
@@ -108,6 +117,14 @@ public class ControlWindowViewModel : ViewModelBase
 
     #region Commands
 
+    private ReactiveCommand<Unit, Unit> _openAdboutCommand;
+
+    public ReactiveCommand<Unit, Unit> OpenAdboutCommand
+    {
+        get => _openAdboutCommand;
+        set => _openAdboutCommand = value;
+    }
+
     private ReactiveCommand<Unit, Unit> _addUserCommand;
 
     public ReactiveCommand<Unit, Unit> AddUserCommand
@@ -165,9 +182,93 @@ public class ControlWindowViewModel : ViewModelBase
         set => _searchByDateCommand = value;
     }
 
+    private ReactiveCommand<Unit, Unit> _deleteCommand;
+
+    public ReactiveCommand<Unit, Unit> DeleteCommand
+    {
+        get => _deleteCommand;
+        set => _deleteCommand = value;
+    }
+
     #endregion
 
     #region Functions
+
+    public async Task<Unit> DeleteTask()
+    {
+        switch (SelectedIndex)
+        {
+            case 0:
+            {
+                if (SelectedDataGridItem == null)
+                {
+                    ErrorOpacity = 0.5;
+                    ErrorText = "Выберите строку";
+                    return Unit.Default;
+                }
+                var t  = SelectedDataGridItem as Item;
+                var res = await DatabaseInterface.DeleteItemAsync(t);
+                if (!res)
+                {
+                    ErrorOpacity = 0.5;
+                    ErrorText = "Данныую строку удалить невозможно";
+                }
+                break;
+            }
+            case 1:
+            {
+                if (SelectedDataGridItem == null)
+                {
+                    ErrorOpacity = 0.5;
+                    ErrorText = "Выберите строку";
+                    return Unit.Default;
+                }
+                var t  = SelectedDataGridItem as Record;
+                if (!DatabaseInterface.DeleteRecord(t))
+                {
+                    ErrorOpacity = 0.5;
+                    ErrorText = "Данныую строку удалить невозможно";
+                }
+                break;
+            }
+            case 2:
+            {
+                if (SelectedDataGridItem == null)
+                {
+                    ErrorOpacity = 0.5;
+                    ErrorText = "Выберите строку";
+                    return Unit.Default;
+                }
+                var t  = SelectedDataGridItem as ItemType;
+                if (!DatabaseInterface.DeleteItemType(t))
+                {
+                    ErrorOpacity = 0.5;
+                    ErrorText = "Данныую строку удалить невозможно";
+                }
+                break;
+            }
+            case 3:
+            {
+                if (SelectedDataGridItem == null)
+                {
+                    ErrorOpacity = 0.5;
+                    ErrorText = "Выберите строку";
+                    return Unit.Default;
+                }
+                var t  = SelectedDataGridItem as Creator;
+                if (!DatabaseInterface.DeleteCreators(t))
+                {
+                    ErrorOpacity = 0.5;
+                    ErrorText = "Данныую строку удалить невозможно";
+                }
+                break;
+            }
+        }
+
+        LoadData();
+        return Unit.Default;
+    }
+
 
     private async Task<Unit> AddRow()
     {
@@ -236,22 +337,26 @@ public class ControlWindowViewModel : ViewModelBase
             case 0:
                 ButtonSearchVisibility = false;
                 newDataGridItems = new ObservableCollection<object>(DatabaseInterface.Items);
+                // CurrentDataGrid.ItemsSource = DatabaseInterface.Items;
                 SearchLabelText = "Введите название";
                 break;
             case 1:
                 ButtonSearchVisibility = true;
                 newDataGridItems = new ObservableCollection<object>(DatabaseInterface.Records);
+                // CurrentDataGrid.ItemsSource = DatabaseInterface.Records;
                 SearchLabelText = "Введите дату прибытия";
                 break;
             case 2:
                 ButtonSearchVisibility = false;
                 newDataGridItems = new ObservableCollection<object>(DatabaseInterface.ItemTypes);
+                // CurrentDataGrid.ItemsSource = DatabaseInterface.ItemTypes;
                 SearchLabelText = "Введите название";
                 break;
             case 3:
             {
                 ButtonSearchVisibility = false;
                 newDataGridItems = new ObservableCollection<object>(DatabaseInterface.Creators);
+                // CurrentDataGrid.ItemsSource = DatabaseInterface.Creators;
                 SearchLabelText = "Введите название";
                 break;
             }
@@ -430,13 +535,18 @@ public class ControlWindowViewModel : ViewModelBase
         return Unit.Default;
     }
 
-    private async Task<Unit> LoadAddUserWndow()
+    private async Task<Unit> LoadAboutWindow()
+    {
+        new AboutWindow().Show();
+        return Unit.Default;
+    }
+
+    private async Task<Unit> LoadAddUserWindow()
     {
         new AddUserWindow().Show();
         return Unit.Default;
     }
-    
-    
+
     #endregion
 
     #region DataGridCollections
@@ -468,6 +578,8 @@ public class ControlWindowViewModel : ViewModelBase
         SaveCommand = ReactiveCommand.CreateFromTask(Save);
         OpenEditCommand = ReactiveCommand.CreateFromTask(OpenEditor);
         AddRowCommand = ReactiveCommand.CreateFromTask(AddRow);
-        AddUserCommand=ReactiveCommand.CreateFromTask(LoadAddUserWndow);
+        AddUserCommand = ReactiveCommand.CreateFromTask(LoadAddUserWindow);
+        OpenAdboutCommand = ReactiveCommand.CreateFromTask(LoadAboutWindow);
+        DeleteCommand = ReactiveCommand.CreateFromTask(DeleteTask);
     }
 }
