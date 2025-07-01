@@ -37,7 +37,7 @@
                       BorderThickness="1" BorderBrush="Gray">
             </DataGrid>
         </StackPanel>
-        <ComboBox Grid.Row="0" Grid.Column="0" Name="ComboBoxMenu" SelectionChanged="ComboBoxMenu_OnSelectionChanged"
+        <ComboBox Grid.Row="0" Grid.Column="0" Name="ComboBoxMenu" SelectionChanged="ComboBoxMenu_OnSelectionChanged" Margin="40"
                   SelectedIndex="{Binding SelectedIndex}">
             <ComboBoxItem Content="Товары"></ComboBoxItem>
             <ComboBoxItem Content="Записи"></ComboBoxItem>

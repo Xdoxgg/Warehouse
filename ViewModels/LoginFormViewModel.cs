@@ -55,8 +55,8 @@ public class LoginFormViewModel : ViewModelBase
 
     public LoginFormViewModel()
     {
-        Name = "test";
-        Password = "test";
+        Name = "";
+        Password = "";
         ErrorOpacity = 0;
         ErrorText = "";
         ButtonClickCommand = ReactiveCommand.CreateFromTask(OnButtonClick);
